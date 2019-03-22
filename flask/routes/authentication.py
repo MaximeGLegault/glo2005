@@ -17,5 +17,9 @@ def login():
 @authentication.route("/signup", methods=["POST"])
 def signup():
     content = request.get_json()
+    print(content["username"])
+    print(content["password"])
     UserService().signup(content["username"], content["password"])
-    return url_for("/login")
+    response = make_response()
+    response.headers["location"] = content["username"]
+    return response
