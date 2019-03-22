@@ -9,7 +9,10 @@ class JWTService:
 
     @staticmethod
     def create_token(username: str) -> str:
-        return jwt.encode({JWTService.USERNAME_FIELD: username}, JWTService.SECRET, algorithm=JWTService.ALGORITHM)
+        token = jwt.encode({JWTService.USERNAME_FIELD: username},
+                           JWTService.SECRET,
+                           algorithm=JWTService.ALGORITHM)
+        return token.decode("utf-8")
 
     @staticmethod
     def decode_token(token: str) -> str:

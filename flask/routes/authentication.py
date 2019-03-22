@@ -8,9 +8,14 @@ authentication = Blueprint("authentication", __name__, url_prefix="/api")
 @authentication.route("/login", methods=['POST'])
 def login():
     content = request.get_json()
-    username = UserService().login(content["username"], content["password"])
-    response = make_response(url_for("user", username=username))
-    response.headers['location'] = username
+    username = get_username_if_valid(content["username"])
+    password = get_password_if_valid(content["password"])
+
+    token = UserService().login(username, password)
+
+    response = jsonify({"token": token})
+    response.headers['location'] = 'users/'+username
+
     return response
 
 
@@ -19,9 +24,12 @@ def signup():
     content = request.get_json()
     username = get_username_if_valid(content["username"])
     password = get_password_if_valid(content["password"])
+
     UserService().signup(username, password)
+
     response = make_response("", 201)
     response.headers["location"] = 'users/'+username
+
     return response
 
 
