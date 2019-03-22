@@ -10,7 +10,6 @@ class UserRepositoryMysql:
 
     def find(self, user: str) -> User:
         cursor = self.database_connector.cursor()
-        print(user)
         query = "SELECT * FROM Users WHERE username LIKE %s"
         cursor.execute(query, (user,))
 
@@ -23,7 +22,7 @@ class UserRepositoryMysql:
 
     def save_new(self, user: User) -> None:
         cursor = self.database_connector.cursor()
-        print(user)
+
         query = "INSERT INTO Users (username, hashedPassword) VALUES (%s, %s)"
         data_user = user.username, user.hashed_password
         cursor.execute(query, data_user)
@@ -33,6 +32,7 @@ class UserRepositoryMysql:
 
     def is_username_free(self, username):
         cursor = self.database_connector.cursor()
+
         query = "SELECT COUNT(username) FROM Users WHERE username = %s"
         cursor.execute(query, (username, ))
         (number_of_rows,) = cursor.fetchone()
