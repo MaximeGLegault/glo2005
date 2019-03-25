@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import login from './views/login.vue'
 import Album from './views/Album.vue'
+import Search from './views/Search.vue'
 
 Vue.use(Router);
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     },
     {
         path: '/Album',
