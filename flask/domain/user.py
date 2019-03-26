@@ -1,5 +1,3 @@
-
-
 class User:
 
     def __init__(self, username, hashed_password):

@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS Users(id INTEGER NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id));
 
 INSERT INTO Users (username, hashedPassword) VALUES
+
+
+
