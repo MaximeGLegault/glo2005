@@ -1,15 +1,15 @@
 <template>
     <div class="searchBar">
         <div class="form">
-            <input autocomplete="off" @keyup.enter.prevent="goSearch" v-model="search" id="search" type="text" placeholder="Search...">
-            <button><a class="search-button" @click="goSearch">Search</a></button>
+            <input autocomplete="off" @keyup.enter.prevent="toSearch" v-model="search" id="search" type="text" placeholder="Search...">
+            <button><a class="search-button" @click="toSearch">Search</a></button>
         </div>
-        <span><input @change="goSearch" type="radio" class="radio" id="global" name="searchType" value="global" v-model="picked" checked><label for="global">All result</label>
-      <input @change="goSearch" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="picked"><label for="albums">Albums</label>
-      <input @change="goSearch" type="radio" class="radio" id="artists" name="searchType" value="artists" v-model="picked"><label for="artists">Artists</label>
-      <input @change="goSearch" type="radio" class="radio" id="songs" name="searchType" value="songs" v-model="picked"><label for="songs">Songs</label>
-      <input @change="goSearch" type="radio" class="radio" id="playlists" name="searchType" value="playlists" v-model="picked"><label for="playlists">Playlists</label>
-      <input @change="goSearch" type="radio" class="radio" id="users" name="searchType" value="users" v-model="picked"><label for="users">Users</label></span>
+        <span><input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="picked" checked><label for="global">All result</label>
+      <input @click="changeType('albums')" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="picked"><label for="albums">Albums</label>
+      <input @click="changeType('artists')" type="radio" class="radio" id="artists" name="searchType" value="artists" v-model="picked"><label for="artists">Artists</label>
+      <input @click="changeType('songs')" type="radio" class="radio" id="songs" name="searchType" value="songs" v-model="picked"><label for="songs">Songs</label>
+      <input @click="changeType('playlists')" type="radio" class="radio" id="playlists" name="searchType" value="playlists" v-model="picked"><label for="playlists">Playlists</label>
+      <input @click="changeType('users')" type="radio" class="radio" id="users" name="searchType" value="users" v-model="picked"><label for="users">Users</label></span>
     </div>
 </template>
 
@@ -24,15 +24,17 @@
             };
         },
         methods: {
-            goSearch() {
+            toSearch() {
                 this.$router.replace({
-                    name: 'Search', query: { q: this.search }
+                    name: 'Search', query: {q: this.search, type: this.picked}
                 });
-                this.$emit('update', { searchTerm: this.search, searchType: this.picked });
+            },
+            created() {
+                this.search = this.$route.query.q;
+            },
+            changeType(picked) {
+                this.picked = picked
             }
-        },
-        created() {
-            this.search = this.$route.query.q;
         }
     };
 </script>

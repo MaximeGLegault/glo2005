@@ -18,10 +18,10 @@
     import SearchResult from './SearchResult';
 
     export default {
-        name: 'Search',
+        name: 'search',
         components: {
-            SearchResult,
-            SearchBar
+            'search-result': SearchResult,
+            'search-bar': SearchBar,
         },
         methods: {
             handler(event) {
@@ -30,7 +30,7 @@
             },
             handler2() {
                 this.$router.replace({
-                    name: 'Search', query: { q: this.searchTerm }
+                    name: 'search', query: { q: this.searchTerm }
                 });
             }
         },
