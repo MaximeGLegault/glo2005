@@ -1,6 +1,6 @@
 from mysql.connector import connect
 
-host = "localhost"
+host = "192.168.99.100"
 port = "6033"
 username = "root"
 password = "1234"

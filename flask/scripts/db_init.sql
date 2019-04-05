@@ -6,7 +6,5 @@ CREATE TABLE IF NOT EXISTS Users(id INTEGER NOT NULL AUTO_INCREMENT,
  username VARCHAR(64) NOT NULL UNIQUE, hashedPassword VARCHAR(60) NOT NULL,
   PRIMARY KEY (id));
 
-INSERT INTO Users (username, hashedPassword) VALUES
-
 
 
