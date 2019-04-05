@@ -25,8 +25,8 @@
         },
         methods: {
             toSearch() {
-                this.$router.replace({
-                    name: 'Search', query: {q: this.search, type: this.picked}
+                this.$router.push({
+                    name: 'search', query: {q: this.search, type: this.picked}
                 });
             },
             created() {
