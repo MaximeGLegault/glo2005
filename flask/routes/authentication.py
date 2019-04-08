@@ -1,4 +1,4 @@
-from flask import Blueprint, request, url_for, make_response
+from flask import Blueprint, request, make_response, jsonify
 
 from domain.user_service import UserService
 
@@ -14,7 +14,7 @@ def login():
     token = UserService().login(username, password)
 
     response = jsonify({"token": token})
-    response.headers['location'] = 'users/'+username
+    response.headers['location'] = 'users/' + username
 
     return response
 
@@ -28,7 +28,7 @@ def signup():
     UserService().signup(username, password)
 
     response = make_response("", 201)
-    response.headers["location"] = 'users/'+username
+    response.headers["location"] = 'users/' + username
 
     return response
 
