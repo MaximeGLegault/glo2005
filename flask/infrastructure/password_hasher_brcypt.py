@@ -9,4 +9,4 @@ class PasswordHasherBCrypt:
         return self.bcrypt.generate_password_hash(password).decode('utf-8')
 
     def check_password_hash(self, password: str, password_hash: str) -> bool:
-        return self.bcrypt.check_password_hash(password, password_hash)
+        return self.bcrypt.check_password_hash(password_hash, password)
