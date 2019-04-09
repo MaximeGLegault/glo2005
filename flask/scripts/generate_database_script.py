@@ -48,20 +48,21 @@ for i in range(100):
 
 with open("albums.sql", "w") as file:
     file.write("USE glo2005;\n")
-    file.write("CREATE TABLE IF NOT EXISTS Albums(id INTEGER NOT NULL, \
+
+    file.write("CREATE TABLE IF NOT EXISTS Albums(id INTEGER NOT NULL, artistName VARCHAR(256),\
  year SMALLINT, genre VARCHAR(256), title VARCHAR(256), description TEXT,\
  PRIMARY KEY (id));\n\n")
 
-    file.write("CREATE TABLE IF NOT EXISTS Songs(id INTEGER NOT NULL,\
+    file.write("CREATE TABLE IF NOT EXISTS Songs(id INTEGER NOT NULL, artistName VARCHAR(256),\
  year SMALLINT, genre VARCHAR(256), title VARCHAR(256), duration SMALLINT,\
  PRIMARY KEY (id));\n\n")
 
     for album in albums:
-        file.write("""INSERT INTO Albums (id, year, genre, title, description) VALUES ({}, {}, "{}", "{}", "{}");\n"""
-                   .format(album_id, album.year, album.genre, album.album_name, album.description))
+        file.write("""INSERT INTO Albums (id, artistName, year, genre, title, description) VALUES ({}, "{}", {}, "{}", "{}", "{}");\n"""
+                   .format(album_id, album.artist_name, album.year, album.genre, album.album_name, album.description))
 
         for song in album.songs:
-            file.write("""INSERT INTO Songs (id, year, genre, title, duration) VALUES ({}, {}, "{}", "{}", {});\n"""
-                       .format(song_id, song.year, song.genre, song.title, song.duration))
+            file.write("""INSERT INTO Songs (id, artistName, year, genre, title, duration) VALUES ({}, "{}", {}, "{}", "{}", {});\n"""
+                       .format(song_id, song.artist_name, song.year, song.genre, song.title, song.duration))
             song_id += 1
         album_id += 1

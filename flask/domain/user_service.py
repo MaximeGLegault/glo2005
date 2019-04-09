@@ -3,7 +3,7 @@ from flask import current_app
 from domain.user import User
 from infrastructure.jwt_service import JWTService
 from infrastructure.password_hasher_brcypt import PasswordHasherBCrypt
-from infrastructure.persistence.UserRepositoryMysql import UserRepositoryMysql
+from infrastructure.persistence.user_repository_mysql import UserRepositoryMysql
 
 
 class UserService:
