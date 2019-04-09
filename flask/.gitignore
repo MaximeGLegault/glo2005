@@ -261,3 +261,5 @@ modules.xml
 .venv/
 
 # End of https://www.gitignore.io/api/flask,python,pycharm+all
+
+scripts/albums.sql
