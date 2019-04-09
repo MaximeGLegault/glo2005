@@ -15,8 +15,10 @@ class SongsRepositoryMySql:
         cursor.execute(query, (title,))
 
         title = None
-        for (id, title, artist, album, genre, duration, released) in cursor:
-            title = Song(title, artist, album, genre, duration, released)
+        for (id, title, artist, album, duration) in cursor:
+            title = Song(title, artist, album, duration)
 
         cursor.close()
         return title
+
+

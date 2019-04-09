@@ -40,11 +40,12 @@ CREATE TABLE IF NOT EXISTS Albums(album_id INTEGER NOT NULL AUTO_INCREMENT,
 DROP TABLE IF EXISTS Songs;
 
 CREATE TABLE IF NOT EXISTS Songs(song_id INTEGER NOT NULL AUTO_INCREMENT,
- album_id INTEGER, title VARCHAR(64) NOT NULL,
+ album_id INTEGER, artist_id INTEGER, title VARCHAR(64) NOT NULL,
  duration INTEGER NOT NULL,
  INDEX indexSong (song_id ASC),
  PRIMARY KEY (song_id),
- FOREIGN KEY (album_id) REFERENCES Albums(album_id));
+ FOREIGN KEY (album_id) REFERENCES Albums(album_id),
+ FOREIGN KEY (artist_id) REFERENCES Artists(artist_id));
 
 DROP TABLE IF EXISTS Playlists;
 
@@ -65,7 +66,7 @@ CONSTRAINT fk_Users_Playlists_users
     REFERENCES Users (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fk_Users_Playlists_playlist
+CONSTRAINT fk_Users_Playlists_playlist
     FOREIGN KEY (playlist_id)
     REFERENCES Playlists (playlist_id)
     ON DELETE NO ACTION
