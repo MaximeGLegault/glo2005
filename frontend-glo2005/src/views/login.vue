@@ -3,7 +3,6 @@
         <h1>Login</h1>
         <p class="center">You have no account?
             <router-link to="/signUp">Sign up</router-link>
-            now with UBeat
         </p>
         <div id="inputDiv">
             <div class="input-field col s6">
