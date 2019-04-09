@@ -14,8 +14,8 @@ class UserRepositoryMysql:
         cursor.execute(query, (user,))
 
         user = None
-        for (id, user, hashedPassword) in cursor:
-            user = User(user, hashedPassword)
+        for (id, user, first_name, last_name, country, email, hashedPassword) in cursor:
+            user = User(user, first_name, last_name, country, email, hashedPassword)
 
         cursor.close()
         return user
@@ -23,8 +23,8 @@ class UserRepositoryMysql:
     def save_new(self, user: User) -> None:
         cursor = self.database_connector.cursor()
 
-        query = "INSERT INTO Users (username, hashedPassword) VALUES (%s, %s)"
-        data_user = user.username, user.hashed_password
+        query = "INSERT INTO Users (username, first_name, last_name, country, email, hashedPassword) VALUES (%s, %s, %s, %s, %s, %s)"
+        data_user = user.username, user.first_name, user.last_name, user.country, user.email, user.hashed_password
         cursor.execute(query, data_user)
 
         self.database_connector.commit()

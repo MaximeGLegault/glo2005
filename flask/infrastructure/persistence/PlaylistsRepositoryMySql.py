@@ -10,13 +10,12 @@ class PlaylistsRepositoryMySql:
 
     def search_by_playlist(self, title: str) -> Playlist.title:
         cursor = self.database_connector.cursor()
-        print(title)
         query = "SELECT * FROM Playlists WHERE title LIKE %s"
         cursor.execute(query, (title,))
 
         title = None
-        for (id, title, songs, genre, duration) in cursor:
-            title = Playlist(title, songs, genre, duration)
+        for (id, title) in cursor:
+            title = Playlist(title)
 
         cursor.close()
         return title

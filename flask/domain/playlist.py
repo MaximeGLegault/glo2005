@@ -1,6 +1,4 @@
 class Playlist:
 
-    def __init__(self, title, songs, duration):
+    def __init__(self, title):
         self.title = title
-        self.songs = songs
-        self.duration = duration
