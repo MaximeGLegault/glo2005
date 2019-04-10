@@ -16,4 +16,4 @@ def get_particular_song(album_id: int, song_id: int):
 def get_all_songs_from_album(album_id: int):
     songs = SongService().get_all_song_from_album(album_id)
 
-    return jsonify(songs)
+    return jsonify([song.to_dict() for song in songs])

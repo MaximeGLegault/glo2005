@@ -1,3 +1,5 @@
+from typing import List
+
 from flask import current_app
 
 from domain.song import Song
@@ -11,7 +13,7 @@ class SongService:
     def get_song(self, song_id: int) -> Song:
         return self.song_repository.retrieve(song_id)
 
-    def get_all_song_from_album(self, album_id):
-        self.song_repository.retrieve_all_from_album(album_id)
+    def get_all_song_from_album(self, album_id: int) -> List[Song]:
+        return self.song_repository.retrieve_all_from_album(album_id)
 
 
