@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS Users
 (
     id             INTEGER     NOT NULL AUTO_INCREMENT,
     username       VARCHAR(64) NOT NULL UNIQUE,
+    email          VARCHAR(64) NOT NULL UNIQUE,
     hashedPassword VARCHAR(60) NOT NULL,
     INDEX indexUser (id ASC),
     PRIMARY KEY (id)
@@ -143,8 +144,6 @@ CREATE TABLE IF NOT EXISTS Artist_Release
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
-
-
 
 
 
