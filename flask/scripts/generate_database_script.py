@@ -134,8 +134,14 @@ index_to_remove = songs_insert_string.rfind(",\n")
 songs_insert_string = songs_insert_string[0:index_to_remove]
 songs_insert_string = songs_insert_string + ";\n\n"
 
-with open("db_init/generate_much.sql", "w") as file:
+with open("db_init/generate_artists.sql", "w") as file:
     file.write("USE glo2005;\n\n")
     file.write(artists_insert_string)
+
+with open("db_init/generate_albums.sql", "w") as file:
+    file.write("USE glo2005;\n\n")
     file.write(albums_insert_string)
+
+with open("db_init/generate_songs.sql", "w") as file:
+    file.write("USE glo2005;\n\n")
     file.write(songs_insert_string)
