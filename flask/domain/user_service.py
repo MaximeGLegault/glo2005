@@ -13,16 +13,18 @@ class UserService:
         self.jwt_service = JWTService()
 
     def login(self, username: str, password: str) -> User:
-        user = self.user_repository.find(username)
+        user = self.user_repository.find_username(username)
         self.password_hasher.check_password_hash(password, user.hashed_password)
-        token = self.jwt_service.create_token(user.username)
+        token = self.jwt_service.create_token(user.username, user.email)
         return token
 
-    def signup(self, username: str, password: str) -> None:
+    def signup(self, username: str, email: str, password: str) -> None:
         is_username_free = self.user_repository.is_username_free(username)
         if not is_username_free:
             raise RuntimeError()
-
+        is_email_free = self.user_repository.is_email_free(email)
+        if not is_email_free:
+            raise RuntimeError()
         hashed_password = self.password_hasher.generate_password_hash(password)
-        user = User(username, hashed_password)
+        user = User(username, email, hashed_password)
         self.user_repository.save_new(user)

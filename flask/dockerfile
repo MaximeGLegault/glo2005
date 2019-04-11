@@ -1,0 +1,15 @@
+FROM python:3.6
+
+EXPOSE 5000
+
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+COPY requirements.txt /app
+RUN pip install -r requirements.txt
+
+COPY . $APP_HOME
+COPY app.py /app
+
+CMD ["python","app.py"]
