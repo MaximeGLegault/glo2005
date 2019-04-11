@@ -1,20 +1,15 @@
-# Partir de l’image officielle de Python 3.7
-FROM python:3.7-slim
+FROM python:3.6
 
-# Mettre le code de l’application dans le répertoire / de l’image
-WORKDIR /
+EXPOSE 5000
 
-# Copier les librairie nécessaire à votre application
-ADD requirements.txt /
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
 
-# Installer les packages Python nécessaires dans requirements.txt
+COPY requirements.txt /app
 RUN pip install -r requirements.txt
 
-# Copier le code de l’application dans le répertoire /
-ADD . /
+COPY . $APP_HOME
+COPY app.py /app
 
-# Exposer le port 8080 de votre container
-EXPOSE 8080
-
-# Lancer le script app.py quand le container démarre
 CMD ["python","app.py"]
