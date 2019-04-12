@@ -3,19 +3,17 @@ from typing import Dict
 
 class Album:
     def __init__(self):
-        self.id = 0
+        self.album_id = 0
         self.year = 0
-        self.genre = ""
+        self.genre_id = 0
         self.title = ""
-        self.description = ""
-        self.artist_name = ""
+        self.artist_id = 0
 
     def to_dict(self) -> Dict:
         return {
-            "id": self.id,
+            "album_id": self.album_id,
             "year": self.year,
-            "genre": self.genre,
+            "genre_id": self.genre_id,
             "title": self.title,
-            "description": self.description,
-            "artistName": self.artist_name,
+            "artist_id": self.artist_id,
         }

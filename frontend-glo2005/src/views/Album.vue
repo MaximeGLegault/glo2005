@@ -1,11 +1,11 @@
 <template>
-    <playlist v-bind:songs="album.songs" v-bind:title="album.album"/>
+    <playlist v-bind:songs="album.songs" v-bind:title="album.title"/>
 
 </template>
 
 <script>
-    import {getAlbums} from '../albums.js'
     import Playlist from './Playlist';
+    import api from "../lib/api";
 
 
     export default {
@@ -16,12 +16,12 @@
         data: () => ({
             album: []
         }),
-        created(){
-            // debugger;
-            const albums = getAlbums();
-            this.album = albums[0];
+        async created() {
+            await api.getAlbum(10000003).then(value => {
+                debugger;
+                this.album = value;
+            });
         }
-
     }
 
 

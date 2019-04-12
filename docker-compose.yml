@@ -2,7 +2,6 @@ version: "3"
 services:
     app:
         build: ./flask
-        container_name: flask
         restart: always
         links:
             - bd
@@ -10,35 +9,26 @@ services:
             - bd
         ports:
             - "5000:5000"
-        volumes:
-            - C:\Users\Propriétaire\Desktop\GLO-2005\glo2005:/app
         expose:
             - "5000"
-
-        environment:
-            IP: "0.0.0.0"
-            PORT: 5000
 
     frontend:
         build: ./frontend-glo2005
         container_name: frontend
         ports:
             - "8080:8080"
-        volumes:
-            - C:\Users\Propriétaire\Desktop\GLO-2005\glo2005:/app
+        depends_on:
+          - app
         environment:
             PORT: 8080
     bd:
         image: mysql:latest
-        container_name: bd
         restart: always
         command: --default-authentication-plugin=mysql_native_password
         environment:
+            MYSQL_DATABASE: glo2005
             MYSQL_ROOT_PASSWORD: 1234
-
         ports:
             - "3306:3306"
         expose:
             - "3306"
-        volumes:
-            - ./flask/bd_init:/docker-entrypoint-initdb.d/:ro

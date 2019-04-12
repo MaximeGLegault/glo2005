@@ -10,18 +10,17 @@ class AlbumRepositoryMysql:
 
     def retrive(self, album_id: int) -> Album:
         cursor = self.database_connector.cursor()
-        query = "SELECT * FROM Albums WHERE id = %s"
+        query = "SELECT * FROM Albums WHERE album_id = %s"
 
         cursor.execute(query, (album_id,))
 
         album = Album()
-        for (id, artistName, year, genre, title, description) in cursor:
-            album.id = id
-            album.artist_name = artistName
+        for (album_id, artist_id, year, genre_id, title) in cursor:
+            album.id = album_id
+            album.artist_name = artist_id
             album.year = year
-            album.genre = genre
+            album.genre = genre_id
             album.title = title
-            album.description = description
 
         cursor.close()
         return album
