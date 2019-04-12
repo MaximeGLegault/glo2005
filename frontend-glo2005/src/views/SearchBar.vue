@@ -2,14 +2,16 @@
     <div class="searchBar">
         <div class="form">
             <input autocomplete="off" @keyup.enter.prevent="toSearch" v-model="search" id="search" type="text" placeholder="Search...">
-            <button><a class="search-button" @click="toSearch">Search</a></button>
+            <button class="deep-purple accent-3 waves-effect waves-light btn"><a class="search-button" @click="toSearch">Search</a></button>
         </div>
-        <span><input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="picked" checked><label for="global">All result</label>
+        <span class="typeButtons">
+            <input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="picked" checked><label for="global">All result</label>
       <input @click="changeType('albums')" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="picked"><label for="albums">Albums</label>
       <input @click="changeType('artists')" type="radio" class="radio" id="artists" name="searchType" value="artists" v-model="picked"><label for="artists">Artists</label>
       <input @click="changeType('songs')" type="radio" class="radio" id="songs" name="searchType" value="songs" v-model="picked"><label for="songs">Songs</label>
       <input @click="changeType('playlists')" type="radio" class="radio" id="playlists" name="searchType" value="playlists" v-model="picked"><label for="playlists">Playlists</label>
-      <input @click="changeType('users')" type="radio" class="radio" id="users" name="searchType" value="users" v-model="picked"><label for="users">Users</label></span>
+      <input @click="changeType('users')" type="radio" class="radio" id="users" name="searchType" value="users" v-model="picked"><label for="users">Users</label>
+        </span>
     </div>
 </template>
 
@@ -61,6 +63,9 @@
         justify-content: center;
         flex-direction: column;
         align-items: center;
+    }
+    .typeButtons{
+        padding-top: 20px;
     }
     #search{
         width: 90%;

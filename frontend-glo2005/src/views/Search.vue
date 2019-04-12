@@ -1,5 +1,8 @@
 <template>
     <div class="main" v-bind:key="this">
+        <h1>
+            Search
+        </h1>
         <search-bar v-on:update="handler($event)"/>
         <search-result v-on:update2="handler2()"
                        v-if="this.results"
@@ -90,5 +93,10 @@
 </script>
 
 <style scoped>
+    h1 {
+        text-align: center;
+        padding-bottom: 70px;
+        padding-top: 20px;
+    }
 
 </style>

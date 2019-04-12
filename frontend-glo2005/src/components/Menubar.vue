@@ -13,12 +13,8 @@
             <div>
                 <router-link to="/Album"><span class="button">Albums</span></router-link>
             </div>
-            <div id="menuSearch" class="menuSmSearch">
-                <div class="form">
-                    <label for="search"></label><input v-on:keyup.enter.prevent="goSearch" v-model="searchTerm"
-                                                       id="search" type="text" placeholder="Search...">
-                    <a id="searchBtn" @click="goSearch"><i class="material-icons">search</i></a>
-                </div>
+            <div>
+                <router-link to="/Search"><span class="button">Search</span></router-link>
             </div>
             <div>
                 <router-link to="/Profile"><span class="button">Profile</span></router-link>

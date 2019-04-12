@@ -87,6 +87,8 @@
 
     h1 {
         align-self: center;
+        padding-bottom: 70px;
+        padding-top: 20px;
     }
 
     #inputDiv {

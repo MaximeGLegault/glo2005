@@ -1,5 +1,9 @@
 <template>
-
+    <div>
+        <h3>
+            search result lolzi
+        </h3>
+    </div>
 </template>
 
 <script>

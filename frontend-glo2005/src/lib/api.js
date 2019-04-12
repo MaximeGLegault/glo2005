@@ -19,9 +19,9 @@ export default {
             url: `${baseUrl}albums/${album_id}`
         }).then(value => value.data)
             .catch(value => console.log(value));
-    }
+    },
 
-    getSearch(searchTerm) {
+    async getSearch(searchTerm) {
         return axios({
             method: 'get',
             url: `${baseUrl}search`,
@@ -34,7 +34,7 @@ export default {
         }).then(value => value.data);
     },
 
-    getSearchBySong(searchTerm) {
+    async getSearchBySong(searchTerm) {
         return axios({
             method: 'get',
             url: `${baseUrl}search/songs`,
@@ -47,7 +47,7 @@ export default {
         }).then(value => value.data);
     },
 
-    getSearchByArtist(searchTerm) {
+    async getSearchByArtist(searchTerm) {
         return axios({
             method: 'get',
             url: `${baseUrl}search/artists`,
@@ -60,7 +60,7 @@ export default {
         }).then(value => value.data);
     },
 
-    getSearchByPlaylist(searchTerm) {
+    async getSearchByPlaylist(searchTerm) {
         return axios({
             method: 'get',
             url: `${baseUrl}search/playlists`,
@@ -73,7 +73,7 @@ export default {
         }).then(value => value.data);
     },
 
-    getSearchByAlbum(searchTerm) {
+    async getSearchByAlbum(searchTerm) {
         return axios({
             method: 'get',
             url: `${baseUrl}search/albums`,
@@ -86,7 +86,7 @@ export default {
         }).then(value => value.data);
     },
 
-    getSearchByUser(searchTerm) {
+    async getSearchByUser(searchTerm) {
         return axios({
             method: 'get',
             url: `${baseUrl}search/users`,
