@@ -263,3 +263,4 @@ modules.xml
 # End of https://www.gitignore.io/api/flask,python,pycharm+all
 
 scripts/albums.sql
+scripts/db_init/generate_much.sql

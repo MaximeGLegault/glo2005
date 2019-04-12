@@ -1,6 +1,8 @@
 from flask import Blueprint, request, make_response, jsonify
 
 from domain.user_service import UserService
+import re
+
 
 authentication = Blueprint("authentication", __name__, url_prefix="/api")
 
@@ -23,9 +25,10 @@ def login():
 def signup():
     content = request.get_json()
     username = get_username_if_valid(content["username"])
+    email = get_email_if_valid(content["email"])
     password = get_password_if_valid(content["password"])
 
-    UserService().signup(username, password)
+    UserService().signup(username, email, password)
 
     response = make_response("", 201)
     response.headers["location"] = 'users/' + username
@@ -47,6 +50,21 @@ def get_username_if_valid(username: [str, int, float]) -> str:
 
     return username
 
+def get_email_if_valid(email: [str, int, float]) -> str:
+    if not isinstance(email, (str, int, float)):
+        raise InvalidCredentials("email is invalid")
+
+    email = email if isinstance(email, str) else str(email)
+
+    match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+
+    if match == None:
+        raise InvalidCredentials("invalid email")
+
+    if len(email) > 64:
+        raise InvalidCredentials("email must be less than 64 characters")
+
+    return email
 
 def get_password_if_valid(password: [str, int, float, dict, list]) -> str:
     if not isinstance(password, (str, int, float)):
