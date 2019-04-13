@@ -18,7 +18,6 @@
         }),
         async created() {
             await api.getAlbum(10000003).then(value => {
-                debugger;
                 this.album = value;
             });
         }

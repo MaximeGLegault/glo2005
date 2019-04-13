@@ -23,16 +23,16 @@
                 Year
             </div>
         </li>
-        <song v-for="song of songs" v-bind:key="song.title" v-model="songs" v-bind:title=song.title v-bind:artist=song.artist v-bind:album=song.album v-bind:genre=song.genre v-bind:duration=song.duration v-bind:year=song.year />
+        <SongItem v-for="song of songs" v-bind:key="song.song_id" v-model="songs" :song="song"/>
     </ul>
 </template>
 
 <script>
-    import Song from './Song';
+    import SongItem from './Song';
     export default {
         name: "Playlist",
         components: {
-            Song
+            SongItem
         },
         props: {
             title: String,
