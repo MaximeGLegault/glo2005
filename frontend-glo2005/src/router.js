@@ -46,7 +46,7 @@ export default new Router({
         },
         {
             path: '/search/songs/<id>',
-            name: 'search',
+            name: 'searchBySong',
             component: Search
         },
         {

@@ -17,23 +17,55 @@
 
 <script>
 
+    import api from '@/lib/api';
+
     export default {
         name: 'SearchBar',
         data() {
             return {
                 search: '',
                 picked: 'global',
+                results: []
             };
         },
         methods: {
-            toSearch() {
-                this.$router.push({
-                    name: 'search', query: {q: this.search, type: this.picked}
-                });
+            async toSearch() {
+                if (this.picked === 'global') {
+                    await api.getSearch(this.searchTerm)
+                        .then((value) => {
+                            this.results = value.results;
+                        });
+                } else if (this.picked === 'artists') {
+                    await api.getSearchByArtist(this.searchTerm)
+                        .then((value) => {
+                            this.results = value.results;
+                        });
+                } else if (this.picked === 'albums') {
+                    await api.search_album(this.searchTerm)
+                        .then(value => {
+                            this.results = value;
+                        });
+                } else if (this.picked === 'songs') {
+                    await api.getSearchBySong(this.searchTerm)
+                        .then((value) => {
+                            this.results = value.results;
+                        });
+                } else if (this.picked === 'playlists') {
+                    await api.getSearchByPlaylist(this.searchTerm)
+                        .then((value) => {
+                            this.results = value.results;
+                        });
+                } else if (this.picked === 'users') {
+                    await api.getSearchByUser(this.searchTerm)
+                        .then((value) => {
+                            this.results = value;
+                        });
+                }
+                this.$emit('update', { searchTerm: this.search, searchType: this.picked, results: this.results });
             },
-            created() {
+/*            created() {
                 this.search = this.$route.query.q;
-            },
+            },*/
             changeType(picked) {
                 this.picked = picked
             }

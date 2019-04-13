@@ -30,6 +30,7 @@
             handler(event) {
                 this.searchTerm = event.searchTerm;
                 this.searchType = event.searchType;
+                this.results = event.results;
             },
             handler2() {
                 this.$router.replace({
@@ -44,14 +45,8 @@
                 results: []
             };
         },
-        async created() {
-            this.searchTerm = this.$route.query.q;
-            await api.getSearch(this.searchTerm)
-                .then((value) => {
-                    this.results = value.results;
-                });
-        },
         async updated() {
+            console.log("updated de search.vue a été appelé")
             if (this.searchType === 'global') {
                 await api.getSearch(this.searchTerm)
                     .then((value) => {
@@ -63,9 +58,9 @@
                         this.results = value.results;
                     });
             } else if (this.searchType === 'albums') {
-                await api.getSearchByAlbum(this.searchTerm)
-                    .then((value) => {
-                        this.results = value.results;
+                await api.search_album(this.searchTerm)
+                    .then(value => {
+                        this.results = value;
                     });
             } else if (this.searchType === 'songs') {
                 await api.getSearchBySong(this.searchTerm)

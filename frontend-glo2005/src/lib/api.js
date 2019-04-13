@@ -21,6 +21,14 @@ export default {
             .catch(value => console.log(value));
     },
 
+    async search_album(album_title){
+        return axios({
+          method: 'get',
+          url: `${baseUrl}search/albums/${album_title}`
+        }).then(value => value.data)
+            .catch(value => console.log(value + "search_album rejected"));
+    },
+
     async getSearch(searchTerm) {
         return axios({
             method: 'get',
@@ -37,7 +45,7 @@ export default {
     async getSearchBySong(searchTerm) {
         return axios({
             method: 'get',
-            url: `${baseUrl}search/songs`,
+            url: `${baseUrl}search/${searchTerm}`,
             headers: {
                 Authorization: Cookies.get('token')
             },
@@ -50,7 +58,7 @@ export default {
     async getSearchByArtist(searchTerm) {
         return axios({
             method: 'get',
-            url: `${baseUrl}search/artists`,
+            url: `${baseUrl}search/${searchTerm}`,
             headers: {
                 Authorization: Cookies.get('token')
             },
