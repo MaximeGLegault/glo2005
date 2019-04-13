@@ -8,14 +8,19 @@ class ArtistsRepositoryMySql:
     def __init__(self, database_connector: MySQLConnection):
         self.database_connector = database_connector
 
-    def search_by_artist(self, artist: str) -> Artist.name:
+    def retrive(self, artist_name: str) -> Artist:
         cursor = self.database_connector.cursor()
         query = "SELECT * FROM Artists WHERE artist_name LIKE %s"
-        cursor.execute(query, (artist,))
+        cursor.execute(query, (artist_name,))
 
-        artist = None
-        for (id, name, year_active) in cursor:
-            artist = Artist(name, year_active)
+        artist = Artist()
+        for (artist_id, artist_name, year_active) in cursor:
+            artist.artist_id = artist_id
+            artist.name = artist_name
+            artist.year_active = year_active
+            print(artist.artist_id, artist.name, artist.year_active)
 
         cursor.close()
         return artist
+
+

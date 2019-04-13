@@ -6,7 +6,7 @@ albums = Blueprint("albums", __name__, url_prefix="/api")
 
 
 @albums.route("/albums/<int:album_id>", methods=['GET'])
-def login(album_id: int):
+def get_album(album_id: int):
     album = AlbumService().get_album(album_id)
-
+    print(album.album_id)
     return jsonify(album.to_dict())
