@@ -25,7 +25,7 @@
 
 <script>
     import api from '@/lib/api';
-    import {mapActions} from "vuex";
+    import Cookies from 'js-cookie'
 
     export default {
         name: 'Login',
@@ -38,15 +38,14 @@
         }),
 
         methods: {
-            ...mapActions([]),
             async login() {
                 await api.loginUser(this.user_username, this.user_password)
                     .then((value) => {
-                        this.$store.state.user = value.data.name;
+                        this.$store.state.user = {name: value.username};
                         this.messageErr = '';
                         this.messageLog = 'You\'re now log in';
-                        Cookies.set('token', value.data.token);
-                        window.location = '/';
+                        Cookies.set('token', value.token);
+                        window.location = '/Profile';
                     }).catch(() => {
                         this.messageErr = 'user not found, check your username and password';
                         this.messageLog = '';
@@ -54,6 +53,7 @@
                     });
             }
         }
+    }
 </script>
 
 <!--<script>-->

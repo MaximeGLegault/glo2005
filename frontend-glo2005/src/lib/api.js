@@ -3,12 +3,12 @@ import axios from 'axios';
 const baseUrl = ' http://127.0.0.1:5000/api/';
 
 export default {
-    async loginUser(userEmail, userPassword) {
+    async loginUser(username, userPassword) {
         return axios({
             method: 'post',
             url: `${baseUrl}login`,
-            data: {email: userEmail, password: userPassword}
-        }).then(value => console.log(value))
+            data: {username: username, password: userPassword}
+        }).then(value => value.data)
             .catch(value => console.log(value));
     },
 

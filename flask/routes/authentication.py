@@ -19,7 +19,7 @@ def login():
 
     token = UserService().login(username, password)
 
-    response = jsonify({"token": token})
+    response = jsonify({"token": token, "username": username})
     response.headers['location'] = 'users/' + username
 
     return response
