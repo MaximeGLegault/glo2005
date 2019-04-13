@@ -3,18 +3,18 @@
         <h1>Login</h1>
         <p class="center">You have no account?
             <router-link to="/signUp">Sign up</router-link>
-            now with UBeat
+            now!
         </p>
         <div id="inputDiv">
             <div class="input-field col s6">
-                <input id="userEmail" type="text" v-model="user_email">
-                <label for="userEmail">Email</label>
+                <input id="userUsername" type="text" v-model="user_username">
+                <label for="userUsername">Username</label>
             </div>
             <div class="input-field col s6">
                 <input id="userPass" type="password" v-model="user_password">
                 <label for="userPass">Password</label>
             </div>
-            <button id="btnLogin" v-on:click="login"  class="deep-purple accent-3 waves-effect waves-light btn">Login
+            <button id="btnLogin" v-on:click="login" class="deep-purple accent-3 waves-effect waves-light btn">Login
             </button>
             <p class="errorMessage">{{messageErr}}</p>
             <p class="loginMessage">{{messageLog}}</p>
@@ -25,25 +25,35 @@
 
 <script>
     import api from '@/lib/api';
+    import {mapActions} from "vuex";
 
     export default {
-        name: 'home',
+        name: 'Login',
 
         data: () => ({
-            user_email: '',
+            user_username: '',
             user_password: '',
             messageErr: '',
             messageLog: ''
         }),
 
         methods: {
+            ...mapActions([]),
             async login() {
-                await api.loginUser(this.user_email, this.user_password)
-                    .then(() => null)
-                    .catch(() => this.messageErr = 'user not found, check your username and password')
+                await api.loginUser(this.user_username, this.user_password)
+                    .then((value) => {
+                        this.$store.state.user = value.data.name;
+                        this.messageErr = '';
+                        this.messageLog = 'You\'re now log in';
+                        Cookies.set('token', value.data.token);
+                        window.location = '/';
+                    }).catch(() => {
+                        this.messageErr = 'user not found, check your username and password';
+                        this.messageLog = '';
+                        this.$store.state.user = '';
+                    });
             }
         }
-    }
 </script>
 
 <!--<script>-->
@@ -59,21 +69,21 @@
 <!--//     messageErr: '',-->
 <!--//     messageLog: ''-->
 <!--// }),-->
-<!--// methods: {-->
-<!--//     ...mapActions([]),-->
-<!--//     async login() {-->
-<!--//         await api.loginUser(this.user_email, this.user_password)-->
-<!--//             .then((value) => {-->
-<!--//                 this.$store.state.user = value.data.name;-->
-<!--//                 this.messageErr = '';-->
-<!--//                 this.messageLog = 'You\'re now log in';-->
-<!--//                 Cookies.set('token', value.data.token);-->
-<!--//                 window.location = '/';-->
-<!--//             }).catch(() => {-->
-<!--//                 this.messageErr = 'user not found, check your username and password';-->
-<!--//                 this.messageLog = '';-->
-<!--//                 this.$store.state.user = '';-->
-<!--//             });-->
+// methods: {
+//     ...mapActions([]),
+//     async login() {
+//         await api.loginUser(this.user_email, this.user_password)
+//             .then((value) => {
+//                 this.$store.state.user = value.data.name;
+//                 this.messageErr = '';
+//                 this.messageLog = 'You\'re now log in';
+//                 Cookies.set('token', value.data.token);
+//                 window.location = '/';
+//             }).catch(() => {
+//                 this.messageErr = 'user not found, check your username and password';
+//                 this.messageLog = '';
+//                 this.$store.state.user = '';
+//             });
 <!--//     }-->
 <!--// }-->
 <!--// };-->

@@ -16,12 +16,12 @@ class SongRepositoryMysql:
         cursor.execute(query, (song_id,))
 
         song = Song()
-        for (song_id, album_id, artist_id, title, duration) in cursor:
-            song.song_id = song_id
-            song.artist_name = artist_id
-            song.album_id = album_id
-            song.title = title
-            song.duration = duration
+        song_id, album_id, artist_id, title, duration = cursor.fetchone()
+        song.song_id = song_id
+        song.artist_name = artist_id
+        song.album_id = album_id
+        song.title = title
+        song.duration = duration
 
         cursor.close()
         return song

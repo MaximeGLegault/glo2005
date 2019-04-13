@@ -6,6 +6,7 @@ from infrastructure.persistence.database_initialisation import init_bd_mysql
 from routes.albums import albums
 from routes.authentication import authentication, init_authentication_error_handler
 from routes.home import home
+from routes.profiles import profiles
 from routes.songs import songs
 
 
@@ -26,6 +27,7 @@ def create_app():
     app.register_blueprint(authentication)
     app.register_blueprint(albums)
     app.register_blueprint(songs)
+    app.register_blueprint(profiles)
 
     return app
 

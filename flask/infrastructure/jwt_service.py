@@ -20,6 +20,11 @@ class JWTService:
         try:
             username = jwt.decode(token, JWTService.SECRET)[JWTService.USERNAME_FIELD]
         except Exception:
-            raise RuntimeError
+            raise InvalidToken()
 
         return username
+
+
+class InvalidToken(Exception):
+    def __init__(self):
+        Exception.__init__(self)

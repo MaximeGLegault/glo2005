@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="things">
         <Menubar/>
         <router-view/>
     </div>
@@ -18,7 +18,6 @@
 </script>
 
 <style>
-
     body {
         background-color: #202020;
         padding: 0;
