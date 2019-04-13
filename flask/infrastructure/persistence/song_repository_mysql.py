@@ -19,7 +19,7 @@ class SongRepositoryMysql:
         for (song_id, album_id, artist_id, title, duration) in cursor:
             song.song_id = song_id
             song.artist_name = artist_id
-            song.albumId = album_id
+            song.album_id = album_id
             song.title = title
             song.duration = duration
 
@@ -37,7 +37,7 @@ class SongRepositoryMysql:
             song = Song()
             song.song_id = song_id
             song.artist_name = artist_id
-            song.albumId = album_id
+            song.album_id = album_id
             song.title = title
             song.duration = duration
 

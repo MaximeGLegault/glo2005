@@ -5,18 +5,23 @@ class Song:
     def __init__(self):
         self.song_id = 0
         self.artist_name = ""
-        self.genre = ""
+        self.artist_id = 0
+        self.genre_name = ""
+        self.genre_id = 0
         self.title = ""
         self.duration = 0
-        self.albumId = 0
+        self.album_id = 0
+        self.album_name = ""
 
     def to_dict(self) -> Dict:
         return {
             "song_id": self.song_id,
-            "artistName": self.artist_name,
-
-            "genre": self.genre,
+            "artist_name": self.artist_name,
+            "artist_id": self.artist_id,
+            "genre_name": self.genre_name,
+            "genre_id": self.genre_id,
             "title": self.title,
             "duration": self.duration,
-            "albumId": self.albumId
+            "album_id": self.album_id,
+            "album_name": self.album_name
         }

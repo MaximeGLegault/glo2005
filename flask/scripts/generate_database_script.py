@@ -46,7 +46,7 @@ class Song:
     song_id = 10000000
 
     def __init__(self, artist_id, album_id, genre_id):
-        self.title = make_string_of_random_words(1, 7)
+        self.title = make_string_of_random_words(1, 4)
         self.artist_id = artist_id
         self.album_id = album_id
         self.genre = genre_id
