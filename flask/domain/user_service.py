@@ -21,10 +21,26 @@ class UserService:
     def signup(self, username: str, email: str, password: str) -> None:
         is_username_free = self.user_repository.is_username_free(username)
         if not is_username_free:
-            raise RuntimeError()
+            raise ConflictSignup("username already exist")
         is_email_free = self.user_repository.is_email_free(email)
         if not is_email_free:
-            raise RuntimeError()
+            raise ConflictSignup("email is already in use")
         hashed_password = self.password_hasher.generate_password_hash(password)
         user = User(username, email, hashed_password)
         self.user_repository.save_new(user)
+
+
+class ConflictSignup(Exception):
+    status_code = 409
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv

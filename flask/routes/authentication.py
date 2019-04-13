@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 
-from domain.user_service import UserService
+from domain.user_service import UserService, ConflictSignup
 import re
 
 
@@ -24,9 +24,9 @@ def login():
 @authentication.route("/signup", methods=["POST"])
 def signup():
     content = request.get_json()
-    username = get_username_if_valid(content["username"])
-    email = get_email_if_valid(content["email"])
-    password = get_password_if_valid(content["password"])
+    username = get_username_if_valid(content.get("username"))
+    email = get_email_if_valid(content.get("email"))
+    password = get_password_if_valid(content.get("password"))
 
     UserService().signup(username, email, password)
 
@@ -50,6 +50,7 @@ def get_username_if_valid(username: [str, int, float]) -> str:
 
     return username
 
+
 def get_email_if_valid(email: [str, int, float]) -> str:
     if not isinstance(email, (str, int, float)):
         raise InvalidCredentials("email is invalid")
@@ -66,6 +67,7 @@ def get_email_if_valid(email: [str, int, float]) -> str:
 
     return email
 
+
 def get_password_if_valid(password: [str, int, float, dict, list]) -> str:
     if not isinstance(password, (str, int, float)):
         raise InvalidCredentials("password must be a string or a number")
@@ -81,8 +83,14 @@ def get_password_if_valid(password: [str, int, float, dict, list]) -> str:
     return password
 
 
-def init_authentication_errorhandler(app):
+def init_authentication_error_handler(app):
     @app.errorhandler(InvalidCredentials)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+
+    @app.errorhandler(ConflictSignup)
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
