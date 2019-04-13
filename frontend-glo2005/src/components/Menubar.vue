@@ -29,7 +29,15 @@
 
 <script>
     export default {
-        name: "Menubar"
+        name: "Menubar",
+        data:() => ({
+            searchTerm: ""
+        }),
+        methods: {
+            goSearch() {
+                this.$router.push("Album");
+            }
+        }
     }
 </script>
 

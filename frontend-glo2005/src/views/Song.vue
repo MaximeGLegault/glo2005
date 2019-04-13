@@ -1,22 +1,22 @@
 <template>
     <li class="song">
         <div class="title">
-            {{Song.title}}
+            {{song.title}}
         </div>
         <div class="artist">
-            {{Song.artist_name}}
+            {{song.artist_name}}
         </div>
         <div class="album">
-            {{Song.album_name}}
+            {{song.album_name}}
         </div>
         <div class="genre">
-            {{Song.genre_name}}
+            {{song.genre_name}}
         </div>
         <div class="duration">
             {{duration}}
         </div>
         <div class="year">
-            {{Song.year}}
+            {{song.year}}
         </div>
     </li>
 </template>
@@ -25,7 +25,7 @@
     export default {
         name: "SongItem",
         props: {
-            Song: {
+            song: {
                 required: true,
                 type: Object,
             },
@@ -35,8 +35,8 @@
         },
         computed: {
             duration() {
-                let minutes = Math.floor(this.Song.duration  / 60);
-                let seconds = this.Song.duration - minutes * 60;
+                let minutes = Math.floor(this.song.duration  / 60);
+                let seconds = this.song.duration - minutes * 60;
 
                 let minutes_string = minutes < 10 ? "0" + minutes.toString() : minutes.toString();
                 let seconds_string = seconds < 10 ? "0" + seconds.toString() : seconds.toString();
