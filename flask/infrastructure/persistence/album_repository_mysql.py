@@ -34,13 +34,13 @@ class AlbumRepositoryMysql:
         cursor.execute(query, (title,))
 
         album = Album()
-        for (album_id, artist_id, year, genre_id, title) in cursor:
+        for (album_id, title, year, artist_id, genre_id) in cursor:
             album.album_id = album_id
-            album.artist_id = artist_id
-            album.year = year
-            album.genre = genre_id
             album.title = title
-            print(album.id, album.artist_id, album.year, album.genre, album.title)
+            album.year = year
+            album.artist_id = artist_id
+            album.genre_id = genre_id
+            print(album.album_id, album.title, album.year, album.artist_id, album.genre_id)
 
         cursor.close()
         return album

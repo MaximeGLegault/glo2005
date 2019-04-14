@@ -23,4 +23,20 @@ class ArtistsRepositoryMySql:
         cursor.close()
         return artist
 
+    def search_by_name(self, name) -> Artist:
+        cursor = self.database_connector.cursor()
+        query = "SELECT * FROM Artists WHERE artist_name = %s"
+
+        cursor.execute(query, (name,))
+
+        artist = Artist()
+        for (artist_id, artist_name, years_active) in cursor:
+            artist.artist_id = artist_id
+            artist.name = artist_name
+            artist.year_active = years_active
+            print(artist_id, artist_name, years_active)
+
+        cursor.close()
+        return artist
+
 

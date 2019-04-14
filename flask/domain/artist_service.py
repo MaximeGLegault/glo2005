@@ -11,3 +11,6 @@ class ArtistService:
 
     def get_Artist(self, artist_id: int) -> Artist:
         return self.artist_repository.retrive(artist_id)
+
+    def search_artist(self, name) -> Artist:
+        return self.artist_repository.search_by_name(name)

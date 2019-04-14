@@ -10,3 +10,5 @@ def get_album(album_id: int):
     album = AlbumService().get_album(album_id)
     print(album.album_id)
     return jsonify(album.to_dict())
+
+
