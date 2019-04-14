@@ -24,8 +24,10 @@
 
 
 <script>
-    import api from '@/lib/api';
+    import api from '../lib/api';
     import Cookies from 'js-cookie'
+    import {mapMutations} from 'vuex'
+
 
     export default {
         name: 'Login',
@@ -38,10 +40,13 @@
         }),
 
         methods: {
+            ...mapMutations([
+                'saveUsername',
+            ]),
             async login() {
                 await api.loginUser(this.user_username, this.user_password)
                     .then((value) => {
-                        this.$store.state.user = {name: value.username};
+                        this.$store.commit('saveUsername', value.username);
                         Cookies.set('token', value.token);
                         this.messageErr = '';
                         this.messageLog = 'You\'re now log in';

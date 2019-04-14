@@ -11,6 +11,34 @@ from infrastructure.jwt_service import JWTService, InvalidToken
 authentication = Blueprint("authentication", __name__, url_prefix="/api")
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        try:
+            token: str = request.headers.get("Authorization")
+        except BadRequest:
+            response = jsonify({"message": "couldn't parse your json"})
+            response.status_code = 401
+            return response
+
+        if token is None or not token.startswith("Bearer "):
+            response = jsonify({"message": "you need to pass a valid bearer token!"})
+            response.status_code = 401
+            return response
+
+        _, _, token = token.partition("Bearer ")
+
+        try:
+            username = JWTService().decode_token(token)
+        except InvalidToken:
+            response = jsonify({"message": "you need to pass a token!"})
+            response.status_code = 401
+            return response
+
+        return f(username, *args, **kwargs)
+    return decorated_function
+
+
 @authentication.route("/login", methods=['POST'])
 def login():
     content = request.get_json()
@@ -38,6 +66,13 @@ def signup():
     response.headers["location"] = 'users/' + username
 
     return response
+
+
+@authentication.route("/token", methods=['GET'])
+@login_required
+def get_token_info(username):
+
+    return jsonify({"message": "this token is valid", "username": username})
 
 
 def get_username_if_valid(username: [str, int, float]) -> str:
@@ -113,31 +148,3 @@ class InvalidCredentials(Exception):
         rv = dict(self.payload or ())
         rv['message'] = self.message
         return rv
-
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        try:
-            token: str = request.headers.get("Authorization")
-        except BadRequest:
-            response = jsonify({"message": "couldn't parse your json"})
-            response.status_code = 401
-            return response
-
-        if token is None or not token.startswith("Bearer "):
-            response = jsonify({"message": "you need to pass a valid bearer token!"})
-            response.status_code = 401
-            return response
-
-        _, _, token = token.partition("Bearer ")
-
-        try:
-            username = JWTService().decode_token(token)
-        except InvalidToken:
-            response = jsonify({"message": "you need to pass a token!"})
-            response.status_code = 401
-            return response
-
-        return f(username, *args, **kwargs)
-    return decorated_function

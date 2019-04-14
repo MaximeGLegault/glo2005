@@ -16,8 +16,8 @@ class PlaylistRepositoryMysql:
         cursor.execute(query, (username,))
         user_id,  = cursor.fetchone()
 
-        query = "SELECT playlist_id, title FROM Playlists WHERE playlist_id = " \
-                "(SELECT playlist_id FROM Users_Playlists WHERE user_id = %s)"
+        query = "SELECT p.playlist_id, p.title FROM Playlists p, Users_Playlists up WHERE p.playlist_id = " \
+                "up.playlist_id AND up.user_id = %s"
         cursor.execute(query, (user_id,))
 
         playlists = []

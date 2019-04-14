@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie'
 
 const baseUrl = ' http://127.0.0.1:5000/api/';
 
@@ -30,5 +31,26 @@ export default {
             url: `${baseUrl}albums/${album_id}`
         }).then(value => value.data)
             .catch(value => console.log(value));
+    },
+
+    async getTokenInfo() {
+        let token = Cookies.get('token');
+        if (token === undefined || token === "") {
+            return Promise.reject("no token");
+        }
+        return axios({
+            method: 'get',
+            url: `${baseUrl}token`,
+            headers: {'Authorization': "Bearer "+token}
+        }).then(value => value.data);
+    },
+
+    async getProfile() {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'get',
+            url: `${baseUrl}profile`,
+            headers: {'Authorization': "Bearer "+token}
+        }).then(value => value.data)
     }
 }
