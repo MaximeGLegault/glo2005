@@ -1,5 +1,5 @@
 <template>
-    <playlist v-bind:songs="album.songs" v-bind:title="album.title"/>
+    <playlist v-if="this.album" v-bind:songs="album.songs" v-bind:title="album.title"/>
 
 </template>
 

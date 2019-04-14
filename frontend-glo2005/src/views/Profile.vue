@@ -10,19 +10,21 @@
             <hr/>
             <button id="addbutton"
                     class="btn-floating waves-effect waves-light deep-purple accent-3"
-                    v-on:click="$emit('addNewPlaylist')">
+                    v-on:click="addNewPlaylist">
                 <i id="clickButtonId" class="material-icons">add</i>
             </button>
             <ul id="ulOfPlaylist" v-for="playlist in this.playlists" v-bind:key="playlist.playlist_id">
-                <router-link class="listPlName" :to="{name: 'playlist', params: {playlistId: playlist.playlist_id}}">
-                    <li>
+                <li>
+                    <router-link class="listPlName"
+                                 :to="{name: 'playlist', params: {playlistId: playlist.playlist_id}}">
                         <a
                                 v-bind:id="playlist.id"
                                 v-on:click="$emit('changePlaylist', playlist.id)">
                             {{playlist.title}}
                         </a>
-                    </li>
-                </router-link>
+                    </router-link>
+                    <a id="deleteBtn" title="Delete playlist"><i class="material-icons">delete</i></a>
+                </li>
             </ul>
         </div>
     </div>
@@ -52,6 +54,11 @@
             username() {
                 return this.$store.state.user.username
             },
+        },
+        methods: {
+            addNewPlaylist() {
+
+            }
         }
     }
 </script>
@@ -89,6 +96,15 @@
     #addbutton {
         display: inline;
         margin-bottom: 5px;
+    }
+
+    #deleteBtn {
+        color: white;
+        cursor: pointer;
+    }
+
+    #deleteBtn:hover {
+        color: #651fff;
     }
 
     @media only screen and (min-device-width: 320px) and (max-device-width: 480px)

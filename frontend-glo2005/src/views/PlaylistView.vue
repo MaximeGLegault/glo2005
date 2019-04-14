@@ -13,14 +13,19 @@
         },
         data: () => ({
             playlistId: 0,
-            playlist: undefined,
+            playlist: {
+                playlist_id: -1,
+                title: "",
+                songs: []
+            },
             songs: []
         }),
         async created() {
             this.playlistId = this.$route.params.playlistId;
 
             await api.getSongsOfPlaylist(this.playlistId)
-                .then(value => this.playlist = value);
+                .then(value => this.playlist = value)
+                .catch(() => this.playlist.title = 'FAILED TO LOAD')
         }
     }
 </script>
