@@ -35,17 +35,22 @@ export default new Router({
             component: Album
         },
         {
+            path: '/search/albums/:title',
+            name: 'searchByAlbum',
+            component: Search
+        },
+        {
             path: '/search',
             name: 'search',
             component: Search
         },
         {
-            path: '/search/artists/<id>',
+            path: '/search/artists/:name',
             name: 'searchByArtists',
             component: Search
         },
         {
-            path: '/search/songs/<id>',
+            path: '/search/songs/:id',
             name: 'searchBySong',
             component: Search
         },

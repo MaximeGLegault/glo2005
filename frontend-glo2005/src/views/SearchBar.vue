@@ -1,7 +1,7 @@
 <template>
     <div class="searchBar">
         <div class="form">
-            <input autocomplete="off" @keyup.enter.prevent="toSearch" v-model="search" id="search" type="text" placeholder="Search...">
+            <input autocomplete="off" @keyup.enter.prevent="toSearch" v-model="searchTerm" id="search" type="text" placeholder="Search...">
             <button class="deep-purple accent-3 waves-effect waves-light btn"><a class="search-button" @click="toSearch">Search</a></button>
         </div>
         <span class="typeButtons">
@@ -21,11 +21,12 @@
 
     export default {
         name: 'SearchBar',
+        props: ['name', 'targetPath'],
         data() {
             return {
-                search: '',
+                searchTerm: '',
                 picked: 'global',
-                results: []
+                results: null
             };
         },
         methods: {
@@ -41,10 +42,11 @@
                             this.results = value.results;
                         });
                 } else if (this.picked === 'albums') {
-                    await api.search_album(this.searchTerm)
-                        .then(value => {
-                            this.results = value;
-                        });
+                    await api.search_album(this.searchTerm).then((value) => {
+                        this.results = value.results
+                    });
+                    this.$router.push({ path: `/search/albums/${this.searchTerm}` });
+                    console.log("search_album called with search term: " + this.searchTerm + " and search type: " + this.picked + "and the result is: " + this.results)
                 } else if (this.picked === 'songs') {
                     await api.getSearchBySong(this.searchTerm)
                         .then((value) => {
@@ -61,15 +63,14 @@
                             this.results = value;
                         });
                 }
-                this.$emit('update', { searchTerm: this.search, searchType: this.picked, results: this.results });
+                this.$emit('update', { searchTerm: this.searchTerm, searchType: this.picked, results: this.results });
             },
-/*            created() {
-                this.search = this.$route.query.q;
-            },*/
+            created(){
+            },
             changeType(picked) {
                 this.picked = picked
             }
-        }
+        },
     };
 </script>
 

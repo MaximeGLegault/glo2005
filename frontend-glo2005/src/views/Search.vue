@@ -3,81 +3,50 @@
         <h1>
             Search
         </h1>
-        <search-bar v-on:update="handler($event)"/>
-        <search-result v-on:update2="handler2()"
-                       v-if="this.results"
-                       :key="this.searchTerm"
-                       :results="results"
-                       :searchTerm="searchTerm"
-                       :searchType="searchType"
-        />
+        <search-bar v-bind:targetPath="path" v-bind:name="typeTitleCase" v-on:update="handler($event)"/>
+        <search-result-album v-if="searchType==='albums'"/>
     </div>
 </template>
 
 <script>
     import Cookies from 'js-cookie';
-    import api from '@/lib/api';
     import SearchBar from './SearchBar';
-    import SearchResult from './SearchResult';
+    /*import SearchResult from './SearchResult';*/
+    import SearchResultAlbum from "./SearchResultAlbum";
 
     export default {
         name: 'search',
         components: {
-            'search-result': SearchResult,
+            /*'search-result': SearchResult,*/
+            'search-result-album': SearchResultAlbum,
             'search-bar': SearchBar,
         },
         methods: {
             handler(event) {
                 this.searchTerm = event.searchTerm;
                 this.searchType = event.searchType;
-                this.results = event.results;
             },
-            handler2() {
-                this.$router.replace({
-                    name: 'search', query: { q: this.searchTerm }
-                });
+            init() {
+                this.path = this.$route.path;
+                this.typeTitleCase = this.$route.name;
             }
         },
         data() {
             return {
                 searchTerm: '',
                 searchType: 'global',
-                results: []
+                results: [],
+                path: '',
+                typeTitleCase: '',
             };
         },
-        async updated() {
-            console.log("updated de search.vue a été appelé")
-            if (this.searchType === 'global') {
-                await api.getSearch(this.searchTerm)
-                    .then((value) => {
-                        this.results = value.results;
-                    });
-            } else if (this.searchType === 'artists') {
-                await api.getSearchByArtist(this.searchTerm)
-                    .then((value) => {
-                        this.results = value.results;
-                    });
-            } else if (this.searchType === 'albums') {
-                await api.search_album(this.searchTerm)
-                    .then(value => {
-                        this.results = value;
-                    });
-            } else if (this.searchType === 'songs') {
-                await api.getSearchBySong(this.searchTerm)
-                    .then((value) => {
-                        this.results = value.results;
-                    });
-            } else if (this.searchType === 'playlists') {
-                    await api.getSearchByPlaylist(this.searchTerm)
-                        .then((value) => {
-                            this.results = value.results;
-                        });
-            } else if (this.searchType === 'users') {
-                await api.getSearchByUser(this.searchTerm)
-                    .then((value) => {
-                        this.results = value;
-                    });
+        watch: {
+            $route() {
+                this.init();
             }
+        },
+        created() {
+            this.init();
         },
         beforeCreate() {
             if (Cookies.get('token') === '') {
