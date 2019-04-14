@@ -35,8 +35,14 @@
             SongItem
         },
         props: {
-            title: String,
-            songs: Array
+            title: {
+                type: String,
+                required: true,
+            },
+            songs: {
+                type: Array,
+                required: true
+            }
         },
         methods:{
 

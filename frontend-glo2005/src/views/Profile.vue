@@ -14,13 +14,15 @@
                 <i id="clickButtonId" class="material-icons">add</i>
             </button>
             <ul id="ulOfPlaylist" v-for="playlist in this.playlists" v-bind:key="playlist.playlist_id">
-                <li>
-                    <a class="listPlName"
-                       v-bind:id="playlist.id"
-                       v-on:click="$emit('changePlaylist', playlist.id)">
-                        {{playlist.title}}
-                    </a>
-                </li>
+                <router-link class="listPlName" :to="{name: 'playlist', params: {playlistId: playlist.playlist_id}}">
+                    <li>
+                        <a
+                                v-bind:id="playlist.id"
+                                v-on:click="$emit('changePlaylist', playlist.id)">
+                            {{playlist.title}}
+                        </a>
+                    </li>
+                </router-link>
             </ul>
         </div>
     </div>
@@ -33,7 +35,7 @@
     export default {
         name: "Profile",
         data: () => ({
-           playlists: []
+            playlists: []
         }),
         async beforeMount() {
             await api.getTokenInfo()
@@ -57,7 +59,7 @@
 <style scoped>
     #master {
         text-align: center;
-        font-size: 2sem;
+        font-size: 2em;
         color: #fff;
     }
 

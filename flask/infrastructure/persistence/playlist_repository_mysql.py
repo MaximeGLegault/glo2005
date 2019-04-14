@@ -3,6 +3,7 @@ from typing import List
 from mysql.connector import MySQLConnection
 
 from domain.Playlist import Playlist
+from domain.song import Song
 
 
 class PlaylistRepositoryMysql:
@@ -32,3 +33,49 @@ class PlaylistRepositoryMysql:
 
         cursor.close()
         return playlists
+
+    def get(self, playlist_id: int) -> Playlist:
+        cursor = self.database_connector.cursor()
+
+        query = "SELECT * FROM Playlists WHERE playlist_id = %s"
+        cursor.execute(query, (playlist_id,))
+
+        playlist_id, title = cursor.fetchone()
+        playlist = Playlist()
+        playlist.playlist_id = playlist_id
+        playlist.title = title
+
+        query = "SELECT user_id FROM Users_Playlists WHERE playlist_id = %s"
+        cursor.execute(query, (playlist_id,))
+
+        user_id, = cursor.fetchone()
+        playlist.user_id = user_id
+
+        query = "SELECT s.song_id, s.album_id, s.artist_id, s.title, s.duration FROM Songs s, Playlist_Songs ps WHERE " \
+                "s.song_id = ps.song_id AND ps.playlist_id = %s"
+        cursor.execute(query, (playlist_id, ))
+
+        for (song_id, album_id, artist_id, title, duration) in cursor:
+            song = Song()
+            song.song_id = song_id
+            song.artist_id = artist_id
+            song.album_id = album_id
+            song.title = title
+            song.duration = duration
+
+            playlist.songs.append(song)
+
+        for song in playlist.songs:
+            query = "SELECT artist_name FROM Artists WHERE artist_id = %s"
+            cursor.execute(query, (song.artist_id,))
+            artist_name, = cursor.fetchone()
+            song.artist_name = artist_name
+
+        for song in playlist.songs:
+            query = "SELECT title FROM Albums WHERE album_id = %s"
+            cursor.execute(query, (song.album_id,))
+            title, = cursor.fetchone()
+            song.album_name = title
+
+        cursor.close()
+        return playlist

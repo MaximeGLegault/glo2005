@@ -5,6 +5,7 @@ import Login from './views/Login.vue'
 import Album from './views/Album.vue'
 import Profile from "./views/Profile";
 import Signup from "./views/Signup";
+import PlaylistView from "./views/PlaylistView";
 
 Vue.use(Router);
 
@@ -41,6 +42,11 @@ export default new Router({
             path: '/signup',
             name: 'signup',
             component: Signup
+        },
+        {
+            path: '/playlist/:playlistId',
+            name: 'playlist',
+            component: PlaylistView
         }
     ]
 })

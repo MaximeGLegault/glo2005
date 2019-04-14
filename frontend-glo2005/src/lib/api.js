@@ -41,7 +41,7 @@ export default {
         return axios({
             method: 'get',
             url: `${baseUrl}token`,
-            headers: {'Authorization': "Bearer "+token}
+            headers: {'Authorization': "Bearer " + token}
         }).then(value => value.data);
     },
 
@@ -50,7 +50,14 @@ export default {
         return axios({
             method: 'get',
             url: `${baseUrl}profile`,
-            headers: {'Authorization': "Bearer "+token}
-        }).then(value => value.data)
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data);
+    },
+
+    async getSongsOfPlaylist(playlist_id) {
+        return axios({
+            method: 'get',
+            url: `${baseUrl}playlists/${playlist_id}`,
+        }).then(value => value.data);
     }
 }
