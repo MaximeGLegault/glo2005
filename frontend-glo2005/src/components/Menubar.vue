@@ -56,7 +56,6 @@
         align-content: stretch;
         height: 100%;
         text-align: center;
-        color: #fff;
         font-weight: normal;
         margin-left: 30px;
         margin-right: 30px;
@@ -68,7 +67,6 @@
     }
 
     #logo {
-        color: #fff;
         font-size: 44px;
         font-weight: normal;
         display: inline-block;
@@ -94,10 +92,10 @@
     }
 
     .menuSmSearch .form input:focus {
-        border-bottom: 1px solid #fff;
-        -webkit-box-shadow: 0 1px 0 0 #fff;
-        -moz-box-shadow: 0 1px 0 0 #fff;
-        box-shadow: 0 1px 0 0 #fff;
+        border-bottom: 1px solid lightgrey;
+        -webkit-box-shadow: 0 1px 0 0 lightgrey;
+        -moz-box-shadow: 0 1px 0 0 lightgrey;
+        box-shadow: 0 1px 0 0 lightgrey;
     }
 
     .button {

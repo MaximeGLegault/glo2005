@@ -29,13 +29,16 @@ def login_required(f):
         _, _, token = token.partition("Bearer ")
 
         try:
-            username = JWTService().decode_token(token)
+            username, user_id = JWTService().decode_token(token)
         except InvalidToken:
             response = jsonify({"message": "you need to pass a token!"})
             response.status_code = 401
             return response
 
-        return f(username, *args, **kwargs)
+        kwargs['username'] = username
+        kwargs["user_id"] = user_id
+
+        return f(*args, **kwargs)
     return decorated_function
 
 
@@ -70,7 +73,8 @@ def signup():
 
 @authentication.route("/token", methods=['GET'])
 @login_required
-def get_token_info(username):
+def get_token_info(**kwargs):
+    username = kwargs['username']
 
     return jsonify({"message": "this token is valid", "username": username})
 

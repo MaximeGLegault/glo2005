@@ -23,7 +23,7 @@
                             {{playlist.title}}
                         </a>
                     </router-link>
-                    <a id="deleteBtn" title="Delete playlist"><i class="material-icons">delete</i></a>
+                    <a id="deleteBtn" title="Delete playlist" @click="deletePlaylist"><i class="material-icons">delete</i></a>
                 </li>
             </ul>
         </div>
@@ -56,8 +56,9 @@
             },
         },
         methods: {
-            addNewPlaylist() {
-
+            deletePlaylist(playlistId) {
+                api.deletePlaylist(playlistId)
+                    .then()
             }
         }
     }
@@ -67,7 +68,6 @@
     #master {
         text-align: center;
         font-size: 2em;
-        color: #fff;
     }
 
     ul {

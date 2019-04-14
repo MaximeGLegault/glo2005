@@ -59,5 +59,12 @@ export default {
             method: 'get',
             url: `${baseUrl}playlists/${playlist_id}`,
         }).then(value => value.data);
+    },
+
+    async deletePlaylist(playlist_id) {
+        return axios({
+            method: 'delete',
+            url: `${baseUrl}playlists/${playlist_id}`,
+        }).then(value => value.data);
     }
 }

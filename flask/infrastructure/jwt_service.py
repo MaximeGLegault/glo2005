@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import jwt
 
 
@@ -7,22 +9,27 @@ class JWTService:
     SECRET = "secret"
     USERNAME_FIELD = "username"
     USER_EMAIL_FIELD = "email"
+    USER_ID_FIELD = "user_id"
 
     @staticmethod
-    def create_token(username: str, email: str) -> str:
-        token = jwt.encode({JWTService.USERNAME_FIELD: username, JWTService.USER_EMAIL_FIELD: email},
+    def create_token(username: str, email: str, user_id: int) -> str:
+        token = jwt.encode({JWTService.USERNAME_FIELD: username,
+                            JWTService.USER_EMAIL_FIELD: email,
+                            JWTService.USER_ID_FIELD: user_id},
                            JWTService.SECRET,
                            algorithm=JWTService.ALGORITHM)
         return token.decode("utf-8")
 
     @staticmethod
-    def decode_token(token: str) -> str:
+    def decode_token(token: str) -> Tuple[str, int]:
         try:
-            username = jwt.decode(token, JWTService.SECRET)[JWTService.USERNAME_FIELD]
+            decoded_jwt = jwt.decode(token, JWTService.SECRET)
+            username = decoded_jwt[JWTService.USERNAME_FIELD]
+            user_id = decoded_jwt[JWTService.USER_ID_FIELD]
         except Exception:
             raise InvalidToken()
 
-        return username
+        return username, user_id
 
 
 class InvalidToken(Exception):

@@ -9,7 +9,9 @@ profiles = Blueprint("profiles", __name__, url_prefix="/api")
 # is of no use right now!
 @profiles.route('/profiles', methods=["GET"])
 @login_required
-def get_profile(username: str):
+def get_profile(**kwargs):
+    username = kwargs["username"]
+
     playlists = ProfileService().get_profile(username)
 
     return jsonify([playlist.to_dict() for playlist in playlists])
@@ -17,7 +19,9 @@ def get_profile(username: str):
 
 @profiles.route('/profile', methods=["GET"])
 @login_required
-def get_own_profile(username: str):
+def get_own_profile(**kwargs):
+    username = kwargs["username"]
+
     playlists = ProfileService().get_profile(username)
 
     return jsonify([playlist.to_dict() for playlist in playlists])

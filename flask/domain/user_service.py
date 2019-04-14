@@ -15,7 +15,7 @@ class UserService:
     def login(self, username: str, password: str) -> str:
         user = self.user_repository.find_username(username)
         self.password_hasher.check_password_hash(password, user.hashed_password)
-        token = self.jwt_service.create_token(user.username, user.email)
+        token = self.jwt_service.create_token(user.username, user.email, user.user_id)
 
         return token
 
@@ -27,9 +27,12 @@ class UserService:
         if not is_email_free:
             raise ConflictSignup("email is already in use")
         hashed_password = self.password_hasher.generate_password_hash(password)
-        user = User(username, email, hashed_password)
-        self.user_repository.save_new(user)
-        token = self.jwt_service.create_token(user.username, user.email)
+        user = User()
+        user.username = username
+        user.email = email
+        user.hashed_password = hashed_password
+        user.user_id = self.user_repository.save_new(user)
+        token = self.jwt_service.create_token(user.username, user.email, user.user_id)
 
         return token
 

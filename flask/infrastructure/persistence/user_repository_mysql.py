@@ -14,8 +14,12 @@ class UserRepositoryMysql:
         cursor.execute(query, (user,))
 
         user = None
-        for (id, user, email, hashedPassword) in cursor:
-            user = User(user, email, hashedPassword)
+        for (id, username, email, hashedPassword) in cursor:
+            user = User()
+            user.user_id = id
+            user.username = username
+            user.email = email
+            user.hashed_password = hashedPassword
 
         cursor.close()
         return user
@@ -26,21 +30,28 @@ class UserRepositoryMysql:
         cursor.execute(query, (user,))
 
         user = None
-        for (id, user, email, hashedPassword) in cursor:
-            user = User(user, email, hashedPassword)
+        for (id, username, email, hashedPassword) in cursor:
+            user = User()
+            user.user_id = id
+            user.username = username
+            user.email = email
+            user.hashed_password = hashedPassword
 
         cursor.close()
         return user
 
-    def save_new(self, user: User) -> None:
+    def save_new(self, user: User) -> int:
         cursor = self.database_connector.cursor()
 
         query = "INSERT INTO Users (username, email, hashedPassword) VALUES (%s, %s, %s)"
         data_user = user.username, user.email, user.hashed_password
         cursor.execute(query, data_user)
 
+        user_id = cursor.lastrowid
         self.database_connector.commit()
         cursor.close()
+
+        return user_id
 
     def is_username_free(self, username):
         cursor = self.database_connector.cursor()
