@@ -3,7 +3,7 @@
         <h1>
             Search
         </h1>
-        <search-bar v-bind:targetPath="path" v-bind:name="typeTitleCase" v-on:update="handler($event)"/>
+        <search-bar v-bind:targetPath="path" v-bind:name="typeOfSearch" v-on:update="handler($event)"/>
         <search-result-album v-if="searchType==='albums'"/>
     </div>
 </template>
@@ -25,10 +25,13 @@
             handler(event) {
                 this.searchTerm = event.searchTerm;
                 this.searchType = event.searchType;
+                this.results = event.results;
+                console.log(event.results);
+                console.log(this.results);
             },
             init() {
                 this.path = this.$route.path;
-                this.typeTitleCase = this.$route.name;
+                this.typeOfSearch = this.$route.name
             }
         },
         data() {
@@ -37,7 +40,7 @@
                 searchType: 'global',
                 results: [],
                 path: '',
-                typeTitleCase: '',
+                typeOfSearch: '',
             };
         },
         watch: {

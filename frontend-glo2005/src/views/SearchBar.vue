@@ -31,6 +31,7 @@
         },
         methods: {
             async toSearch() {
+                try {
                 if (this.picked === 'global') {
                     await api.getSearch(this.searchTerm)
                         .then((value) => {
@@ -42,11 +43,8 @@
                             this.results = value.results;
                         });
                 } else if (this.picked === 'albums') {
-                    await api.search_album(this.searchTerm).then((value) => {
-                        this.results = value.results
-                    });
-                    this.$router.push({ path: `/search/albums/${this.searchTerm}` });
-                    console.log("search_album called with search term: " + this.searchTerm + " and search type: " + this.picked + "and the result is: " + this.results)
+                    await api.search_album(this.searchTerm).then(value => this.results = value);
+                    console.log("search_album called with search term: " + this.searchTerm + " and search type: " + this.picked + "and the result is: " + JSON.stringify(this.results));
                 } else if (this.picked === 'songs') {
                     await api.getSearchBySong(this.searchTerm)
                         .then((value) => {
@@ -63,7 +61,14 @@
                             this.results = value;
                         });
                 }
-                this.$emit('update', { searchTerm: this.searchTerm, searchType: this.picked, results: this.results });
+                }
+                catch(err) { throw new Error(`Something failed`); }
+                finally
+                {
+                    this.$emit('update', { searchTerm: this.searchTerm, searchType: this.picked, results: this.results });
+                    this.$router.push({ path: `/search/${this.picked}/${this.searchTerm}` });
+                }
+
             },
             created(){
             },
