@@ -12,13 +12,14 @@ class UserService:
         self.password_hasher = PasswordHasherBCrypt()
         self.jwt_service = JWTService()
 
-    def login(self, username: str, password: str) -> User:
+    def login(self, username: str, password: str) -> str:
         user = self.user_repository.find_username(username)
         self.password_hasher.check_password_hash(password, user.hashed_password)
         token = self.jwt_service.create_token(user.username, user.email)
+
         return token
 
-    def signup(self, username: str, email: str, password: str) -> None:
+    def signup(self, username: str, email: str, password: str) -> str:
         is_username_free = self.user_repository.is_username_free(username)
         if not is_username_free:
             raise ConflictSignup("username already exist")
@@ -28,6 +29,9 @@ class UserService:
         hashed_password = self.password_hasher.generate_password_hash(password)
         user = User(username, email, hashed_password)
         self.user_repository.save_new(user)
+        token = self.jwt_service.create_token(user.username, user.email)
+
+        return token
 
 
 class ConflictSignup(Exception):

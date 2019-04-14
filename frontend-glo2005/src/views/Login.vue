@@ -42,10 +42,10 @@
                 await api.loginUser(this.user_username, this.user_password)
                     .then((value) => {
                         this.$store.state.user = {name: value.username};
+                        Cookies.set('token', value.token);
                         this.messageErr = '';
                         this.messageLog = 'You\'re now log in';
-                        Cookies.set('token', value.token);
-                        window.location = '/Profile';
+                        this.$router.push('/Profile');
                     }).catch(() => {
                         this.messageErr = 'user not found, check your username and password';
                         this.messageLog = '';

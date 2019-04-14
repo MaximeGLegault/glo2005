@@ -12,6 +12,18 @@ export default {
             .catch(value => console.log(value));
     },
 
+    async signUp(username, email, password) {
+        return axios({
+            method: 'post',
+            url: `${baseUrl}signup`,
+            data: {username: username, email: email, password: password}
+        }).then(value => value.data)
+            .catch(value => {
+                console.log(value);
+                throw value;
+            });
+    },
+
     async getAlbum(album_id) {
         return axios({
             method: 'get',

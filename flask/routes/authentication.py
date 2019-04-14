@@ -32,9 +32,9 @@ def signup():
     email = get_email_if_valid(content.get("email"))
     password = get_password_if_valid(content.get("password"))
 
-    UserService().signup(username, email, password)
+    token = UserService().signup(username, email, password)
 
-    response = make_response("", 201)
+    response = make_response(jsonify({"token": token, "username": username}), 201)
     response.headers["location"] = 'users/' + username
 
     return response
@@ -61,9 +61,7 @@ def get_email_if_valid(email: [str, int, float]) -> str:
 
     email = email if isinstance(email, str) else str(email)
 
-    match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
-
-    if match == None:
+    if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
         raise InvalidCredentials("invalid email")
 
     if len(email) > 64:
