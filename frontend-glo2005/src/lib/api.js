@@ -62,9 +62,21 @@ export default {
     },
 
     async deletePlaylist(playlist_id) {
+        let token = Cookies.get('token');
         return axios({
             method: 'delete',
             url: `${baseUrl}playlists/${playlist_id}`,
+            headers: {'Authorization': "Bearer " + token}
         }).then(value => value.data);
+    },
+
+    async addPlaylist(playlist_title) {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'POST',
+            url: `${baseUrl}playlists`,
+            data: {title: playlist_title},
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data)
     }
 }

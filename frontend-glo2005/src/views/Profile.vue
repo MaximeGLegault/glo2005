@@ -10,60 +10,47 @@
             <hr/>
             <button id="addbutton"
                     class="btn-floating waves-effect waves-light deep-purple accent-3"
-                    v-on:click="addNewPlaylist">
+                    v-on:click="showCreationplaylistSection">
                 <i id="clickButtonId" class="material-icons">add</i>
             </button>
-            <ul id="ulOfPlaylist" v-for="playlist in this.playlists" v-bind:key="playlist.playlist_id">
-                <li>
-                    <router-link class="listPlName"
-                                 :to="{name: 'playlist', params: {playlistId: playlist.playlist_id}}">
-                        <a
-                                v-bind:id="playlist.id"
-                                v-on:click="$emit('changePlaylist', playlist.id)">
-                            {{playlist.title}}
-                        </a>
-                    </router-link>
-                    <a id="deleteBtn" title="Delete playlist" @click="deletePlaylist"><i
-                            class="material-icons">delete</i></a>
-                </li>
-            </ul>
-        </div>
-        <div id="playlist">
-            <div id="titlePl">
-                <h1>{{ currentlySelectedPlaylist.title }} </h1>
 
-                <button v-on:click="toggleEdit"
-                        v-show="showEditButton"
-                        id="editBtn"
-                        class="btn-floating waves-effect waves-light black ">
-                    <i class="material-icons">mode_edit</i>
-                </button>
-
-                <div v-show="showSectionEdit" id="editDiv">
-                    <div class="input-field col s6">
-                        <input id="pl_name" type="text" v-model="inputNameEdit" placeholder="Playlist's Name">
-                    </div>
-                    <a id="checkBtn" class="waves-effect btn-flat " v-on:click="editNamePlaylist">
-                        <i class="material-icons left">check</i>
-                    </a>
+            <div id="newPlaylist" v-if="showPlaylistCreationSection">
+                <div class="input-field col s6">
+                    <label for="pl_name"></label><input id="pl_name" type="text" v-model="inputNameEdit"
+                                                        placeholder="Playlist's Name">
                 </div>
+
+                <a class="btnCreatePlaylist" title="Create new Playlist" @click="addNewPlaylist">
+                    <i class="material-icons">done</i>
+                </a>
+                <a class="btnCreatePlaylist" title="Cancel creating new Playlist" @click="cancelCreatingPlaylist">
+                    <i class="material-icons">cancel</i>
+                </a>
             </div>
+            <a >{{ messageLog }}</a>
+
+            <playlist-list v-if="this.playlists" :playlists="this.playlists"
+                           v-on:changeTitle="editTitlePlaylist($event)"
+                           v-on:deletePlaylist="deletePlaylist($event)"/>
         </div>
     </div>
 </template>
 
 <script>
     import api from "../lib/api";
+    import PlaylistList from "./PlaylistList";
     // import { mapMutations } from 'vuex'
 
     export default {
         name: "Profile",
+        components: {PlaylistList},
         data: () => ({
             playlists: [],
             currentlySelectedPlaylist: {},
-            showSectionEdit: false,
+            showPlaylistCreationSection: false,
             showEditButton: false,
             inputNameEdit: '',
+            messageLog: "",
 
         }),
         async beforeMount() {
@@ -85,31 +72,30 @@
         methods: {
             async deletePlaylist(playlistId) {
                 await api.deletePlaylist(playlistId)
-                    .then(() => this.playlists.filter((value,) => {
+                    .then(() => this.playlists = this.playlists.filter((value,) => {
                         return value.playlist_id !== playlistId
-                    }))
+                    }));
             },
             async addNewPlaylist() {
-                await api.addPlaylist()
+                if (!this.inputNameEdit) {
+                    this.messageLog = "Please put a name!"
+                } else {
+                    await api.addPlaylist(this.inputNameEdit)
+                        .then(value => {
+                            this.playlists.push({playlist_id: value.playlist_id, title: this.inputNameEdit});
+                            this.inputNameEdit = "";
+                            this.messageLog = "";
+                            this.showPlaylistCreationSection = false;
+                        });
+                }
             },
-            toggleEdit() {
-                this.showSectionEdit = !this.showSectionEdit;
+            showCreationplaylistSection() {
+                this.showPlaylistCreationSection = true;
             },
-            async editNamePlaylist() {
-                this.showSectionEdit = !this.showSectionEdit;
-                // await this.updatePlaylistName({
-                //     playlistId: this.$store.state.userCurrentSelectedPlaylist.id,
-                //     newName: this.inputNameEdit
-                // })
-                //     .then(() => {
-                //         this.playlistTitle = this.$store.state.userCurrentSelectedPlaylist.name;
-                //         this.showSectionEdit = false;
-                //     })
-                //     .catch(() => {
-                //         this.$router.push('/login');
-                //     });
+            cancelCreatingPlaylist() {
+                this.showPlaylistCreationSection = false;
+                this.messageLog = ""
             },
-
         }
     }
 </script>
@@ -148,15 +134,6 @@
         margin-bottom: 5px;
     }
 
-    #deleteBtn {
-        color: white;
-        cursor: pointer;
-    }
-
-    #deleteBtn:hover {
-        color: #651fff;
-    }
-
     @media only screen and (min-device-width: 320px) and (max-device-width: 480px)
     and (orientation: portrait) {
         #playlistName {
@@ -185,6 +162,25 @@
         #addbutton {
             margin-bottom: 10px;
         }
+    }
+
+    #newPlaylist {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .input-field {
+        margin: 0;
+    }
+
+    .btnCreatePlaylist {
+        color: white;
+        cursor: pointer;
+    }
+
+    .btnCreatePlaylist:hover {
+        color: #651fff;
     }
 
 </style>
