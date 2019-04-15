@@ -22,12 +22,19 @@
         name: "SearchResultAlbum",
         props: ['results'],
         watch: {
-            // This would be called anytime the value of title changes
             results(newValue) {
-                this.title = newValue["title"];
-                this.year = newValue["year"];
-                this.genre_name = newValue["genre"];
-                this.artist_name = newValue["artist_name"];
+                if(newValue){
+                    this.title = newValue["title"];
+                    this.year = newValue["year"];
+                    this.genre_name = newValue["genre"];
+                    this.artist_name = newValue["artist_name"];
+                }
+                else {
+                    this.title = null;
+                    this.year = null;
+                    this.genre_name = null;
+                    this.artist_name = null;
+                }
             }
         },
         data() {

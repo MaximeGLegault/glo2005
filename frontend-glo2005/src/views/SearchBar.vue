@@ -4,11 +4,12 @@
             <input class="searchText" autocomplete="off" @keyup.enter.prevent="toSearch" v-model="searchTerm" id="search" type="text" placeholder="Search...">
             <button class="deep-purple accent-3 waves-effect waves-light btn"><a class="search-button" @click="toSearch">Search</a></button>
         </div>
-        <div style="text-align:center" class="errorMessage" v-if="errors">
+        <div style="text-align:center" class="errorMessage" v-if="noSearchTerm">
             <b class ="errorMessage">Please correct the following error:</b>
-            <ul>
-                <li>{{ errors }}</li>
-            </ul>
+                <p>{{ errors }}</p>
+        </div>
+        <div style="text-align:center" class="errorMessage" v-if="errors">
+            <b class ="errorMessage">Album not found</b>
         </div>
         <span class="typeButtons">
             <input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="searchType" checked><label for="global">All result</label>
@@ -30,6 +31,7 @@
         props: ['name', 'targetPath'],
         data() {
             return {
+                noSearchTerm: false,
                 errors: '',
                 searchTerm: '',
                 searchType: 'global',
@@ -39,19 +41,40 @@
         methods: {
             async toSearch() {
                 try {
-                    await api.getSearch(this.searchType, this.searchTerm).then(value => this.results = value)
+                    await api.getSearch(this.searchType, this.searchTerm).then((response) => {
+                        if(response.status === 404){
+                            this.errors = response.data["message"];
+                            this.results = null;
+                            this.$emit('error404', { results: this.results, error: this.error });
+                            console.log("this.errors: " + this.errors);
+                            console.log("error response message: " + response.data["message"]);
+                            console.log("response.status === 404");
+                            console.log("response.data : " + response.data);
+                        }
+                        else {
+                            this.results = response;
+                            this.errors = null;
+                            console.log("response: " + response);
+                        }
+                    })
                 }
-                catch(err) { throw new Error(`Something failed`); }
+                catch(err) { console.error("err.response.data: " + err.response.data) }
                 finally
                 {
-                    this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
-                    if(this.searchTerm){
-                        this.$router.push({ path: `/search/${this.searchType}/${this.searchTerm}` });
-                        this.errors = null;
+                    if(!this.errors){
+                        console.log("results: " + JSON.stringify(this.results));
+                        this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
+                        if(this.searchTerm){
+                            this.$router.push({ path: `/search/${this.searchType}/${this.searchTerm}` });
+                            this.errors = null;
+                        }
+                        else {
+                            this.$router.push({ path: `/Search/` });
+                            this.noSearchTerm = true;
+                        }
                     }
-                    else {
-                        this.$router.push({ path: `/Search/` });
-                        this.errors = "Please enter a search term";
+                    else{
+                        this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
                     }
                 }
 
