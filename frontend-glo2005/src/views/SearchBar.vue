@@ -46,7 +46,6 @@
                 {
                     this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
                     if(this.searchTerm){
-                        console.log(this.searchTerm + this.searchType + JSON.stringify(this.results));
                         this.$router.push({ path: `/search/${this.searchType}/${this.searchTerm}` });
                         this.errors = null;
                     }
@@ -59,15 +58,17 @@
             },
             changeType(picked) {
                 this.searchType = picked
-            }
+            },
+            init(){
+                this.searchTerm =  '';
+                this.searchType = '';
+                this.results = null;
+            },
         },
         updated() {
-          console.log("Search Bar updated");
         },
         created(){
-            this.searchTerm =  '';
-            this.searchType = '';
-            this.results = null;
+            this.init();
         },
     };
 </script>

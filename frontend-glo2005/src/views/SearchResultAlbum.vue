@@ -11,17 +11,25 @@
             {{artist_name}}
         </div>
         <div class="genre">
-            {{genre_id}}
+            {{genre_name}}
         </div>
     </li>
 </template>
 
 <script>
-    import api from '@/lib/api';
 
     export default {
         name: "SearchResultAlbum",
         props: ['results'],
+        watch: {
+            // This would be called anytime the value of title changes
+            results(newValue) {
+                this.title = newValue["title"];
+                this.year = newValue["year"];
+                this.genre_name = newValue["genre"];
+                this.artist_name = newValue["artist_name"];
+            }
+        },
         data() {
             return {
                 rawArtistResult: null,
@@ -35,22 +43,11 @@
             };
         },
         methods:{
-             async getArtistName(){
-                try{
-                    console.log("passé à getArtistName: " + this.artist_id);
-                    await api.getArtistName(this.artist_id).then(value => this.rawArtistResult = value);
-                }
-                catch(err) { throw new Error(`Something failed`); }
-                finally {
-                    this.artist_name = this.rawArtistResult["name"];
-                }
-            },
             init() {
                 this.title = this.rawResult["title"];
                 this.year = this.rawResult["year"];
-                this.genre_id = this.rawResult["genre_id"];
-                this.artist_id = this.rawResult["artist_id"];
-                this.getArtistName();
+                this.genre_name = this.rawResult["genre"];
+                this.artist_name = this.rawResult["artist_name"];
             }
         },
         computed: {
@@ -62,7 +59,6 @@
             this.init();
         },
         updated() {
-            console.log("Search Result updated");
         },
     };
 

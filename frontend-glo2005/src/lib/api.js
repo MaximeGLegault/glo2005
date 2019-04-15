@@ -27,15 +27,7 @@ export default {
             method: 'get',
             url: `${baseUrl}search/${search_type}/${search_term}`
         }).then(value => value.data)
-            .catch(value => console.log(value.data + search_type + search_term));
-    },
-    async getArtistName(artist_id)
-    {
-        return axios({
-            method: 'get',
-            url: `${baseUrl}search/artists/${artist_id}`
-        }).then(value => value.data)
-            .catch(value => value.data)
+            .catch(value => console.log("error value: " + value.data));
     },
 
     async getSearchBySong(searchTerm) {

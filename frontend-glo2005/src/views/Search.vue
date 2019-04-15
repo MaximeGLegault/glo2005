@@ -4,7 +4,7 @@
             Search
         </h1>
         <search-bar class="searchBar" v-bind:targetPath="path" v-bind:name="typeOfSearch" v-on:update="handler($event)"/>
-        <search-result-album v-bind:results="results" v-model="results" v-if="searchType==='albums' && searchTerm"/>
+        <search-result-album v-bind:results.sync="results" v-model="results" v-if="searchType==='albums' && searchTerm"/>
         <search-result-artist v-if="searchType==='artists' && searchTerm"/>
         <search-result-song v-if="searchType==='songs' && searchTerm"/>
         <search-result-playlist v-if="searchType==='playlists' && searchTerm"/>
@@ -38,14 +38,11 @@
                 this.searchTerm = event.searchTerm;
                 this.searchType = event.searchType;
                 this.results = event.results;
-                this.isClicked = true;
-                this.init();
                 console.log("results dans search: " + JSON.stringify(this.results));
             },
             init() {
                 this.path = this.$route.path;
                 this.typeOfSearch = this.$route.name
-                this.isClicked = false
             },
         },
         data() {
@@ -55,11 +52,9 @@
                 path: '',
                 typeOfSearch: '',
                 results: [],
-                isClicked: false
             };
         },
         updated() {
-            console.log("Search updated");
         },
         created() {
             this.init();
