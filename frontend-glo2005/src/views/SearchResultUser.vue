@@ -1,5 +1,5 @@
 <template>
-    
+    <h3>Search result User</h3>
 </template>
 
 <script>

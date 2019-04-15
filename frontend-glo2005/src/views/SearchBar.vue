@@ -1,16 +1,22 @@
 <template>
     <div class="searchBar">
         <div class="form">
-            <input autocomplete="off" @keyup.enter.prevent="toSearch" v-model="searchTerm" id="search" type="text" placeholder="Search...">
+            <input class="searchText" autocomplete="off" @keyup.enter.prevent="toSearch" v-model="searchTerm" id="search" type="text" placeholder="Search...">
             <button class="deep-purple accent-3 waves-effect waves-light btn"><a class="search-button" @click="toSearch">Search</a></button>
         </div>
+        <div style="text-align:center" class="errorMessage" v-if="errors">
+            <b class ="errorMessage">Please correct the following error:</b>
+            <ul>
+                <li>{{ errors }}</li>
+            </ul>
+        </div>
         <span class="typeButtons">
-            <input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="picked" checked><label for="global">All result</label>
-      <input @click="changeType('albums')" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="picked"><label for="albums">Albums</label>
-      <input @click="changeType('artists')" type="radio" class="radio" id="artists" name="searchType" value="artists" v-model="picked"><label for="artists">Artists</label>
-      <input @click="changeType('songs')" type="radio" class="radio" id="songs" name="searchType" value="songs" v-model="picked"><label for="songs">Songs</label>
-      <input @click="changeType('playlists')" type="radio" class="radio" id="playlists" name="searchType" value="playlists" v-model="picked"><label for="playlists">Playlists</label>
-      <input @click="changeType('users')" type="radio" class="radio" id="users" name="searchType" value="users" v-model="picked"><label for="users">Users</label>
+            <input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="searchType" checked><label for="global">All result</label>
+      <input @click="changeType('albums')" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="searchType"><label for="albums">Albums</label>
+      <input @click="changeType('artists')" type="radio" class="radio" id="artists" name="searchType" value="artists" v-model="searchType"><label for="artists">Artists</label>
+      <input @click="changeType('songs')" type="radio" class="radio" id="songs" name="searchType" value="songs" v-model="searchType"><label for="songs">Songs</label>
+      <input @click="changeType('playlists')" type="radio" class="radio" id="playlists" name="searchType" value="playlists" v-model="searchType"><label for="playlists">Playlists</label>
+      <input @click="changeType('users')" type="radio" class="radio" id="users" name="searchType" value="users" v-model="searchType"><label for="users">Users</label>
         </span>
     </div>
 </template>
@@ -24,64 +30,51 @@
         props: ['name', 'targetPath'],
         data() {
             return {
+                errors: '',
                 searchTerm: '',
-                picked: 'global',
+                searchType: 'global',
                 results: null
             };
         },
         methods: {
             async toSearch() {
                 try {
-                if (this.picked === 'global') {
-                    await api.getSearch(this.searchTerm)
-                        .then((value) => {
-                            this.results = value.results;
-                        });
-                } else if (this.picked === 'artists') {
-                    await api.getSearchByArtist(this.searchTerm)
-                        .then((value) => {
-                            this.results = value.results;
-                        });
-                } else if (this.picked === 'albums') {
-                    await api.search_album(this.searchTerm).then(value => this.results = value);
-                    console.log("search_album called with search term: " + this.searchTerm + " and search type: " + this.picked + "and the result is: " + JSON.stringify(this.results));
-                } else if (this.picked === 'songs') {
-                    await api.getSearchBySong(this.searchTerm)
-                        .then((value) => {
-                            this.results = value.results;
-                        });
-                } else if (this.picked === 'playlists') {
-                    await api.getSearchByPlaylist(this.searchTerm)
-                        .then((value) => {
-                            this.results = value.results;
-                        });
-                } else if (this.picked === 'users') {
-                    await api.getSearchByUser(this.searchTerm)
-                        .then((value) => {
-                            this.results = value;
-                        });
-                }
+                    await api.getSearch(this.searchType, this.searchTerm).then(value => this.results = value)
                 }
                 catch(err) { throw new Error(`Something failed`); }
                 finally
                 {
-                    this.$emit('update', { searchTerm: this.searchTerm, searchType: this.picked, results: this.results });
-                    this.$router.push({ path: `/search/${this.picked}/${this.searchTerm}` });
+                    this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
+                    if(this.searchTerm){
+                        console.log(this.searchTerm + this.searchType + JSON.stringify(this.results));
+                        this.$router.push({ path: `/search/${this.searchType}/${this.searchTerm}` });
+                        this.errors = null;
+                    }
+                    else {
+                        this.$router.push({ path: `/Search/` });
+                        this.errors = "Please enter a search term";
+                    }
                 }
 
             },
-            created(){
-            },
             changeType(picked) {
-                this.picked = picked
+                this.searchType = picked
             }
+        },
+        updated() {
+          console.log("Search Bar updated");
+        },
+        created(){
+            this.searchTerm =  '';
+            this.searchType = '';
+            this.results = null;
         },
     };
 </script>
 
 <style scoped>
     a:hover{
-        color: #42b983;
+        color: white;
     }
     a{
         height: 36px;
@@ -102,8 +95,22 @@
         flex-direction: column;
         align-items: center;
     }
+    .searchText{
+        color: #d1d1d1;
+    }
+    .search-button {
+        position:relative;
+        align-self: end;
+    }
     .typeButtons{
         padding-top: 20px;
+    }
+    .errorMessage{
+        color: #d1d1d1;
+        align-content: center;
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
     #search{
         width: 90%;

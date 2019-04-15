@@ -1,5 +1,5 @@
 <template>
-    $END$
+    <h3>Search result artist</h3>
 </template>
 
 <script>

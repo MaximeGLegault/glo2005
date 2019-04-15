@@ -21,21 +21,21 @@ export default {
             .catch(value => console.log(value));
     },
 
-    async getSearch(search_term, search_type)
+    async getSearch(search_type, search_term)
     {
         return axios({
             method: 'get',
             url: `${baseUrl}search/${search_type}/${search_term}`
         }).then(value => value.data)
-            .catch(value => console.log(value.data));
+            .catch(value => console.log(value.data + search_type + search_term));
     },
-
-    async search_album(album_title){
+    async getArtistName(artist_id)
+    {
         return axios({
-          method: 'get',
-          url: `${baseUrl}search/albums/${album_title}`
+            method: 'get',
+            url: `${baseUrl}search/artists/${artist_id}`
         }).then(value => value.data)
-            .catch(value => console.log(value + "search_album rejected"));
+            .catch(value => value.data)
     },
 
     async getSearchBySong(searchTerm) {
