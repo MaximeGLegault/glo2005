@@ -12,10 +12,18 @@ def search_album(title):
     album = AlbumService().search_album(title)
     return jsonify(album.to_dict())
 
+
 @search.route("/search/artists/<name>", methods=['GET'])
 def search_artist(name):
     print("search_artist called")
     artist = ArtistService().search_artist(name)
+    return jsonify(artist.to_dict())
+
+
+@search.route("/search/artists/<int:artist_id>", methods=['GET'])
+def search_artist_by_id(artist_id):
+    print("search_artist_by_id called")
+    artist = ArtistService().get_Artist(artist_id)
     return jsonify(artist.to_dict())
 
 
