@@ -23,9 +23,31 @@
                             {{playlist.title}}
                         </a>
                     </router-link>
-                    <a id="deleteBtn" title="Delete playlist" @click="deletePlaylist"><i class="material-icons">delete</i></a>
+                    <a id="deleteBtn" title="Delete playlist" @click="deletePlaylist"><i
+                            class="material-icons">delete</i></a>
                 </li>
             </ul>
+        </div>
+        <div id="playlist">
+            <div id="titlePl">
+                <h1>{{ currentlySelectedPlaylist.title }} </h1>
+
+                <button v-on:click="toggleEdit"
+                        v-show="showEditButton"
+                        id="editBtn"
+                        class="btn-floating waves-effect waves-light black ">
+                    <i class="material-icons">mode_edit</i>
+                </button>
+
+                <div v-show="showSectionEdit" id="editDiv">
+                    <div class="input-field col s6">
+                        <input id="pl_name" type="text" v-model="inputNameEdit" placeholder="Playlist's Name">
+                    </div>
+                    <a id="checkBtn" class="waves-effect btn-flat " v-on:click="editNamePlaylist">
+                        <i class="material-icons left">check</i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -37,7 +59,12 @@
     export default {
         name: "Profile",
         data: () => ({
-            playlists: []
+            playlists: [],
+            currentlySelectedPlaylist: {},
+            showSectionEdit: false,
+            showEditButton: false,
+            inputNameEdit: '',
+
         }),
         async beforeMount() {
             await api.getTokenInfo()
@@ -56,10 +83,33 @@
             },
         },
         methods: {
-            deletePlaylist(playlistId) {
-                api.deletePlaylist(playlistId)
-                    .then()
-            }
+            async deletePlaylist(playlistId) {
+                await api.deletePlaylist(playlistId)
+                    .then(() => this.playlists.filter((value,) => {
+                        return value.playlist_id !== playlistId
+                    }))
+            },
+            async addNewPlaylist() {
+                await api.addPlaylist()
+            },
+            toggleEdit() {
+                this.showSectionEdit = !this.showSectionEdit;
+            },
+            async editNamePlaylist() {
+                this.showSectionEdit = !this.showSectionEdit;
+                // await this.updatePlaylistName({
+                //     playlistId: this.$store.state.userCurrentSelectedPlaylist.id,
+                //     newName: this.inputNameEdit
+                // })
+                //     .then(() => {
+                //         this.playlistTitle = this.$store.state.userCurrentSelectedPlaylist.name;
+                //         this.showSectionEdit = false;
+                //     })
+                //     .catch(() => {
+                //         this.$router.push('/login');
+                //     });
+            },
+
         }
     }
 </script>

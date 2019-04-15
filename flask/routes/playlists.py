@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, make_response, request
 
-from domain.playlist_service import PlaylistService
+from domain.playlist_service import PlaylistService, ImpossibleToGetPlaylist, ImpossibleToDeletePlaylist
 from routes.authentication import login_required
 
 playlists = Blueprint("playlists", __name__, url_prefix="/api")
@@ -30,3 +30,17 @@ def create_playlist(**kwargs):
     playlist_id = PlaylistService().add(user_id, title)
 
     return make_response(jsonify({'playlist_id': playlist_id}), 201)
+
+
+def init_playlists_error_handler(app):
+    @app.errorhandler(ImpossibleToGetPlaylist)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+
+    @app.errorhandler(ImpossibleToDeletePlaylist)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response

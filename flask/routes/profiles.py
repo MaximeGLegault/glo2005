@@ -10,9 +10,9 @@ profiles = Blueprint("profiles", __name__, url_prefix="/api")
 @profiles.route('/profiles', methods=["GET"])
 @login_required
 def get_profile(**kwargs):
-    username = kwargs["username"]
+    user_id = kwargs["user_id"]
 
-    playlists = ProfileService().get_profile(username)
+    playlists = ProfileService().get_profile(user_id)
 
     return jsonify([playlist.to_dict() for playlist in playlists])
 
@@ -20,8 +20,8 @@ def get_profile(**kwargs):
 @profiles.route('/profile', methods=["GET"])
 @login_required
 def get_own_profile(**kwargs):
-    username = kwargs["username"]
+    user_id = kwargs["user_id"]
 
-    playlists = ProfileService().get_profile(username)
+    playlists = ProfileService().get_profile(user_id)
 
     return jsonify([playlist.to_dict() for playlist in playlists])

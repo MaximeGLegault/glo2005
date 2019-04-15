@@ -12,5 +12,5 @@ class ProfileService():
         self.jwt_service = JWTService()
         self.playlist_repository = PlaylistRepositoryMysql(current_app.config["database_connector"])
 
-    def get_profile(self, username: str) -> List[Playlist]:
-        return self.playlist_repository.get_playlist_from_username(username)
+    def get_profile(self, user_id: int) -> List[Playlist]:
+        return self.playlist_repository.get_playlist_from_username(user_id)

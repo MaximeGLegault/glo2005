@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <h1>Welcome to our site!</h1>
   </div>
 </template>
 
@@ -13,3 +13,9 @@ export default {
   }
 }
 </script>
+<style>
+  h1 {
+    text-align: center;
+    font-size: 2em;
+  }
+</style>
