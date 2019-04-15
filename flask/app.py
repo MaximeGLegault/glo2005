@@ -7,7 +7,7 @@ from routes.albums import albums
 from routes.authentication import authentication, init_authentication_errorhandler
 from routes.home import home
 from routes.songs import songs
-from routes.search import search
+from routes.search import search, init_search_error_handler
 
 
 def create_app():
@@ -21,6 +21,7 @@ def create_app():
 
     # error handlers
     init_authentication_errorhandler(app)
+    init_search_error_handler(app)
 
     # blueprint routes registration
     app.register_blueprint(home)

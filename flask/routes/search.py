@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, url_for, make_response
 
-from domain.album_service import AlbumService
+from domain.album_service import AlbumService, ImpossibleToGetAlbum
 from domain.artist_service import ArtistService
 
 search = Blueprint("search", __name__, url_prefix="/api")
@@ -27,4 +27,9 @@ def search_artist_by_id(artist_id):
     return jsonify(artist.to_dict())
 
 
-
+def init_search_error_handler(app):
+    @app.errorhandler(ImpossibleToGetAlbum)
+    def handle_inexistent_album(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
