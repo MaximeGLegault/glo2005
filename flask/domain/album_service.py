@@ -1,4 +1,5 @@
 from flask import current_app
+from typing import Dict
 
 from domain.album import Album
 from infrastructure.persistence.album_repository_mysql import AlbumRepositoryMysql, AlbumNotFound
@@ -14,22 +15,20 @@ class AlbumService:
     def search_album(self, title: str) -> Album:
         try:
             album = self.album_repository.search_by_album_title(title)
+            print("search_album dans album_service was called")
         except AlbumNotFound:
+            print("impossibletoGetAlbum was raised")
             raise ImpossibleToGetAlbum("Album with title %s does not exist".format(title))
         return album
 
 
 class ImpossibleToGetAlbum(Exception):
-    status_code = 404
 
-    def __init__(self, message, status_code=None, payload=None):
+    def __init__(self, message):
         Exception.__init__(self)
         self.message = message
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
 
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['message'] = self.message
-        return rv
+    def to_dict(self) -> Dict:
+        return {
+            "message": self.message,
+        }

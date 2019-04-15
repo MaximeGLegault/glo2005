@@ -30,6 +30,7 @@ def search_artist_by_id(artist_id):
 def init_search_error_handler(app):
     @app.errorhandler(ImpossibleToGetAlbum)
     def handle_inexistent_album(error):
+        print("handle_inexistent_album called")
+        print(error)
         response = jsonify(error.to_dict())
-        response.status_code = error.status_code
         return response
