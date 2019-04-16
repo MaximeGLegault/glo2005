@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Results for Artists with name {{this.searchQuery}}</h2>
+        <h1>Results for artists with name containing: {{this.searchQuery}}</h1>
         <table class="list">
         <tr class="header">
             <th>Name</th>

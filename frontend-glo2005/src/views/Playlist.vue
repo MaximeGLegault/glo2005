@@ -2,10 +2,9 @@
     <ul class="list">
 
         <div class="list-title" >{{title}}</div>
-
         <li class="header">
             <div class="title">
-                Title
+                Song
             </div>
             <div class="artist">
                 Artist
@@ -18,9 +17,6 @@
             </div>
             <div class="duration">
                 Duration
-            </div>
-            <div class="year">
-                Year
             </div>
         </li>
         <SongItem v-for="song of songs" v-bind:key="song.song_id" v-model="songs" :song="song"/>

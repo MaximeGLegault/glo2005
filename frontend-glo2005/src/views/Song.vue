@@ -15,9 +15,6 @@
         <div class="duration">
             {{duration}}
         </div>
-        <div class="year">
-            {{song.year}}
-        </div>
     </li>
 </template>
 

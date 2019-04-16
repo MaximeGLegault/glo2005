@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="list-title" >Results for Albums with title {{this.searchQuery}}</div>
+        <h1>Results for albums with title containing: {{this.searchQuery}}</h1>
     <table class="list">
         <tr class="header">
             <th>Title</th>

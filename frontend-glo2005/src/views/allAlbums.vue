@@ -12,10 +12,10 @@
                 <th>Artist</th>
             </tr>
             <tr class="tableItem" v-for="album of albums" v-bind:key="album">
-                <td>{{album.title}}</td>
+                <td v-on:click="albumTitleClicked(album.album_id)">{{album.title}}</td>
                 <td>{{album.year}}</td>
                 <td>{{album.genre}}</td>
-                <td>{{album.artist_name}}</td>
+                <td v-on:click="albumArtistNameClicked(album.artist_id)">{{album.artist_name}}</td>
             </tr>
         </table>
     </div>
