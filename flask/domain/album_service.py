@@ -14,13 +14,10 @@ class AlbumService:
 
     def search_album(self, title):
         try:
-            album = self.album_repository.search_by_album_title(title)
-            print("AlbumNotFound pas raised")
+            albums = self.album_repository.search_by_album_title(title)
         except AlbumNotFound:
-            print("Impossibletogetalbum was raised")
             raise ImpossibleToGetAlbum("Album with title %s does not exist".format(title))
-        print("album was returned")
-        return album
+        return albums
 
 
 class ImpossibleToGetAlbum(Exception):

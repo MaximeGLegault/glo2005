@@ -3,6 +3,10 @@ from mysql.connector import MySQLConnection
 from domain.artist import Artist
 
 
+class ArtistNotFound(Exception):
+    pass
+
+
 class ArtistsRepositoryMySql:
 
     def __init__(self, database_connector: MySQLConnection):
@@ -18,25 +22,32 @@ class ArtistsRepositoryMySql:
             artist.artist_id = artist_id
             artist.name = artist_name
             artist.year_active = year_active
-            print(artist.artist_id, artist.name, artist.year_active)
 
         cursor.close()
         return artist
 
-    def search_by_name(self, name) -> Artist:
+    def search_by_artist_name(self, artist_name):
         cursor = self.database_connector.cursor()
-        query = "SELECT * FROM Artists WHERE artist_name = %s"
+        query = "SELECT * FROM Artists WHERE artist_name LIKE '%"+artist_name+"%'"
 
-        cursor.execute(query, (name,))
+        cursor.execute(query)
 
-        artist = Artist()
-        for (artist_id, artist_name, years_active) in cursor:
-            artist.artist_id = artist_id
-            artist.name = artist_name
-            artist.year_active = years_active
-            print(artist_id, artist_name, years_active)
+        results = cursor.fetchall()
+
+        if cursor.rowcount == 0:
+            cursor.close()
+            raise ArtistNotFound()
+
+        artists = []
+        for row in results:
+            artist = Artist()
+            artist.artist_id = row[0]
+            artist.artist_name = row[1]
+            artist.year_active = row[2]
+            artists.append(artist)
+
 
         cursor.close()
-        return artist
+        return artists
 
 

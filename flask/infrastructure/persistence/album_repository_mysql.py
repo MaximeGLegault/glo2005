@@ -68,13 +68,11 @@ class AlbumRepositoryMysql:
         results = cursor.fetchall()
 
         if cursor.rowcount == 0:
-            print("result is none")
             cursor.close()
             raise AlbumNotFound()
 
         albums = []
         for row in results:
-            print(row)
             album = Album()
             album.album_id = row[0]
             album.title = row[1]
