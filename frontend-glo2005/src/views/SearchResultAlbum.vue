@@ -1,19 +1,18 @@
 <template>
-    <li class="title">
-        <h3>Search result album</h3>
-        <div class="title">
-            {{title}}
-        </div>
-        <div class="year">
-            {{year}}
-        </div>
-        <div class="artist">
-            {{artist_name}}
-        </div>
-        <div class="genre">
-            {{genre_name}}
-        </div>
-    </li>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Genre</th>
+            <th>Artist</th>
+        </tr>
+        <tr v-for="album of albums" v-bind:key="album">
+            <td>{{album.title}}</td>
+            <td>{{album.year}}</td>
+            <td>{{album.genre_name}}</td>
+            <td>{{album.artist_name}}</td>
+        </tr>
+    </table>
 </template>
 
 <script>
@@ -24,37 +23,50 @@
         watch: {
             results(newValue) {
                 if(newValue){
-                    this.title = newValue["title"];
-                    this.year = newValue["year"];
-                    this.genre_name = newValue["genre"];
-                    this.artist_name = newValue["artist_name"];
+                    this.init();
+                    // console.log("newValue");
+                    // console.log(newValue);
+                    // this.albums = [];
+                    // for (var i = 1; i < newValue.length; i++) {
+                    //     this.albums[this.title].push(this.rawResult["title"]);
+                    //     this.albums[this.year].push(this.rawResult["year"]);
+                    //     this.albums[this.genre_name].push(this.rawResult["genre"]);
+                    //     this.albums[this.artist_name].push(this.rawResult["artist_name"]);
+                    // }
                 }
                 else {
-                    this.title = null;
-                    this.year = null;
-                    this.genre_name = null;
-                    this.artist_name = null;
+                    this.albums = [];
+                    console.log("newvalue null")
                 }
             }
         },
         data() {
             return {
-                rawArtistResult: null,
-                rawGenreResult: null,
-                title: '',
-                year: 0,
-                artist_id: 0,
-                genre_id: 0,
-                artist_name: '',
-                genre_name: ''
+                albums: [
+                    {title: ''},
+                    {year: 0},
+                    {artist_id: 0},
+                    {genre_id: 0},
+                    {artist_name: ''},
+                    {genre_name: ''},
+                ]
             };
         },
         methods:{
             init() {
-                this.title = this.rawResult["title"];
-                this.year = this.rawResult["year"];
-                this.genre_name = this.rawResult["genre"];
-                this.artist_name = this.rawResult["artist_name"];
+                this.albums = [];
+                this.albums.title = '';
+                this.albums.year = 0;
+                this.albums.artist_name = '';
+                this.albums.genre_name = '';
+                for (var i = 0; i < this.rawResult.length; i++) {
+                    this.albums[i] = [];
+                    this.albums[i].title = this.rawResult[i]["title"];
+                    this.albums[i].year = this.rawResult[i]["year"];
+                    this.albums[i].genre_name = this.rawResult[i]["genre"];
+                    this.albums[i].artist_name = this.rawResult[i]["artist_name"];
+                    console.log(this.albums[i]);
+                }
             }
         },
         computed: {
