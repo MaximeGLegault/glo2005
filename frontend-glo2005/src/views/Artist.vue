@@ -1,13 +1,13 @@
 <template>
     <div class="main">
-<!--        <artistDescription v-if="this.artist"-->
-<!--                           :key="this.artist.artist_id"-->
-<!--                           :artist="this.artist"-->
-<!--        />-->
-<!--        <albumsList v-if="this.albums"-->
-<!--                    :key="this.albums.collectionId"-->
-<!--                    :albums="this.albums"-->
-<!--        />-->
+        <h1>{{ artist.artist_name }}</h1>
+        <ul v-for="album in this.albums" v-bind:key="album.album_id">
+            <li>
+                <router-link :to="{name: 'album', params: {album_id: album.album_id}}">
+                <span>{{ album.title }}</span>
+                </router-link>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -16,8 +16,7 @@
 
     export default {
         name: 'Artist',
-        components: {
-        },
+        components: {},
         data() {
             return {
                 artist: {},
@@ -25,28 +24,19 @@
             };
         },
         async created() {
-            await api.getArtist(this.$route.params.artistId)
+            let artist_id = this.$route.params.artist_id ? this.$route.params.artist_id : 10000002;
+            await api.getArtist(artist_id)
                 .then((value) => {
-                    this.artist = value.results[0];
-                }).catch((error) => {
-                    if (error.response.status === 401) {
-                        this.$router.push('/login');
-                    }
-                });
-            await api.getAlbums(this.$route.params.artistId)
-                .then((value) => {
-                    this.albums = value.results;
-                    this.albums.sort((album1, album2) =>
-                        album2.releaseDate.slice(0, 4) - album1.releaseDate.slice(0, 4));
-                }).catch((error) => {
-                    if (error.response.status === 401) {
-                        this.$router.push('/login');
-                    }
+                    this.artist = value;
+                    this.albums = value.albums
                 });
         }
-    };
+    }
+    ;
 </script>
 
 <style scoped>
-
+    .main {
+        text-align: center;
+    }
 </style>

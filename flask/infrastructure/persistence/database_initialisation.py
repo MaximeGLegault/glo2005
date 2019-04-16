@@ -2,8 +2,8 @@ from mysql.connector import connect
 
 # host = "192.168.99.100"
 # port = "6033"
-# host = "localhost"
-host = "bd"  # pour le docker-compose
+host = "localhost"
+# host = "bd"  # pour le docker-compose
 port = "3306"
 username = "root"
 password = "1234"

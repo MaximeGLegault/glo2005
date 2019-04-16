@@ -8,7 +8,7 @@
                 <router-link to="/"><span class="button">Home</span></router-link>
             </div>
             <div>
-                <router-link to="/Artists"><span class="button">Artists</span></router-link>
+                <router-link :to="{name: 'artist', params: {artist_id: 0}}"><span class="button">Artists</span></router-link>
             </div>
             <div>
                 <router-link :to="{name: 'album', params: {album_id: 0}}"><span class="button">Albums</span></router-link>

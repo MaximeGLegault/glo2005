@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from infrastructure.persistence.database_initialisation import init_bd_mysql
 from routes.albums import albums
+from routes.artists import artists
 from routes.authentication import authentication, init_authentication_error_handler
 from routes.home import home
 from routes.playlists import playlists, init_playlists_error_handler
@@ -30,6 +31,7 @@ def create_app():
     app.register_blueprint(home)
     app.register_blueprint(authentication)
     app.register_blueprint(albums)
+    app.register_blueprint(artists)
     app.register_blueprint(search)
     app.register_blueprint(songs)
     app.register_blueprint(profiles)

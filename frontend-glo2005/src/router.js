@@ -75,10 +75,5 @@ export default new Router({
             name: 'searchBySong',
             component: Search
         },
-        {
-            path: '/search',
-            name: 'search',
-            component: Search
-        }
     ]
 })

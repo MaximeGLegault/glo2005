@@ -33,6 +33,14 @@ export default {
             .catch(value => console.log(value));
     },
 
+    async getArtist(artist_id) {
+        return axios({
+            method: 'get',
+            url: `${baseUrl}artists/${artist_id}`
+        }).then(value => value.data)
+            .catch(value => console.log(value));
+    },
+
     async getTokenInfo() {
         let token = Cookies.get('token');
         if (token === undefined || token === "") {

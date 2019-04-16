@@ -1,5 +1,6 @@
 from mysql.connector import MySQLConnection
 
+from domain.album import Album
 from domain.artist import Artist
 
 
@@ -12,7 +13,7 @@ class ArtistsRepositoryMySql:
     def __init__(self, database_connector: MySQLConnection):
         self.database_connector = database_connector
 
-    def retrive(self, artist_id: int) -> Artist:
+    def get(self, artist_id: int) -> Artist:
         cursor = self.database_connector.cursor()
         query = "SELECT * FROM Artists WHERE artist_id LIKE %s"
         cursor.execute(query, (artist_id,))
@@ -20,10 +21,30 @@ class ArtistsRepositoryMySql:
         artist = Artist()
         for (artist_id, artist_name, year_active) in cursor:
             artist.artist_id = artist_id
-            artist.name = artist_name
+            artist.artist_name = artist_name
             artist.year_active = year_active
 
         cursor.close()
+        return artist
+
+    def get_with_album(self, artist_id: int) -> Artist:
+        artist = self.get(artist_id)
+
+        cursor = self.database_connector.cursor()
+        query = "SELECT a.album_id, a.title, a.year, a.genre_id, g.genre_name FROM Albums a, Genres g " \
+                "WHERE artist_id = %s AND a.genre_id = g.genre_id"
+        cursor.execute(query, (artist_id,))
+
+        for (album_id, title, year, genre_id, genre_name) in cursor:
+            album = Album()
+            album.album_id = album_id
+            album.artist_id = artist_id
+            album.title = title
+            album.year = year
+            album.genre_id = genre_id,
+            album.genre_name = genre_name
+            artist.albums.append(album)
+
         return artist
 
     def search_by_artist_name(self, artist_name):

@@ -11,8 +11,7 @@ class ArtistService:
         self.artist_repository = ArtistsRepositoryMySql(current_app.config["database_connector"])
 
     def get_Artist(self, artist_id: int) -> Artist:
-        return self.artist_repository.retrive(artist_id)
-
+        return self.artist_repository.get(artist_id)
 
     def search_artist(self, name):
         try:
@@ -20,6 +19,10 @@ class ArtistService:
         except ArtistNotFound:
             raise ImpossibleToGetArtist("Artist with name %s does not exist".format(name))
         return artists
+
+    def get(self, artist_id: int) -> Artist:
+        return self.artist_repository.get_with_album(artist_id)
+
 
 class ImpossibleToGetArtist(Exception):
 
