@@ -45,7 +45,7 @@ export default new Router({
             component: Search
         },
         {
-            path: '/search/artists/:name',
+            path: '/search/artists/:artist_name',
             name: 'searchByArtists',
             component: Search
         },

@@ -4,8 +4,8 @@
             Search
         </h1>
         <search-bar class="searchBar" v-bind:targetPath="path" v-bind:name="typeOfSearch" v-on:update="handler($event)"/>
-        <search-result-album v-bind:results.sync="results" v-model="results" v-if="searchType==='albums' && searchTerm"/>
-        <search-result-artist v-if="searchType==='artists' && searchTerm"/>
+        <search-result-album v-bind:results.sync="results" v-bind:searchTerm="searchTerm" v-model="results" v-if="searchType==='albums' && searchTerm"/>
+        <search-result-artist v-bind:results.sync="results" v-bind:searchTerm="searchTerm" v-if="searchType==='artists' && searchTerm"/>
         <search-result-song v-if="searchType==='songs' && searchTerm"/>
         <search-result-playlist v-if="searchType==='playlists' && searchTerm"/>
         <search-result-user v-if="searchType==='users' && searchTerm"/>

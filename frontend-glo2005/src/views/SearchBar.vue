@@ -9,7 +9,7 @@
                 <p>The search is empty</p>
         </div>
         <div style="text-align:center" class="errorMessage" v-if="errors">
-            <b class ="errorMessage">Album not found</b>
+            <b class ="errorMessage">{{this.prettySearchType}} not found</b>
         </div>
         <span class="typeButtons">
             <input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="searchType" checked><label for="global">All result</label>
@@ -49,8 +49,8 @@
                         if(this.results["message"]){
                             console.log("pas bon")
                             this.results = null;
-                            this.errors = "Album not found";
-                            this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
+                            this.errors = "Result not found";
+                            this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results});
                         }
                         else{
                             this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
@@ -67,7 +67,23 @@
                 }
             },
             changeType(picked) {
-                this.searchType = picked
+                this.searchType = picked;
+                this.init();
+                if(picked === "albums"){
+                    this.prettySearchType = "Album";
+                }
+                else if(picked === "artists"){
+                    this.prettySearchType = "Artist";
+                }
+                else if(picked === "songs"){
+                    this.prettySearchType = "Song";
+                }
+                else if(picked === "playlists"){
+                    this.prettySearchType = "Playlist";
+                }
+                else if(picked === "users"){
+                    this.prettySearchType = "User";
+                }
             },
             init(){
                 this.searchTerm =  '';
@@ -75,6 +91,7 @@
                 this.results = null;
                 this.errors = null;
                 this.noSearchTerm = false;
+                this.prettySearchType = '';
             },
         },
         updated() {

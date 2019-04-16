@@ -1,4 +1,6 @@
 <template>
+    <div>
+    <h2>Results for Albums with title {{this.searchQuery}}</h2>
     <table>
         <tr>
             <th>Title</th>
@@ -13,13 +15,14 @@
             <td>{{album.artist_name}}</td>
         </tr>
     </table>
+    </div>
 </template>
 
 <script>
 
     export default {
         name: "SearchResultAlbum",
-        props: ['results'],
+        props: ['results', 'searchTerm'],
         watch: {
             results(newValue) {
                 if(newValue){
@@ -36,7 +39,6 @@
                 }
                 else {
                     this.albums = [];
-                    console.log("newvalue null")
                 }
             }
         },
@@ -65,13 +67,15 @@
                     this.albums[i].year = this.rawResult[i]["year"];
                     this.albums[i].genre_name = this.rawResult[i]["genre"];
                     this.albums[i].artist_name = this.rawResult[i]["artist_name"];
-                    console.log(this.albums[i]);
                 }
             }
         },
         computed: {
             rawResult () {
                 return this.results;
+            },
+            searchQuery () {
+                return this.searchTerm;
             }
         },
         created() {
