@@ -22,5 +22,6 @@
         background-color: #202020;
         padding: 0;
         margin: 0;
+        color: lightgrey;
     }
 </style>

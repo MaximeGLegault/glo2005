@@ -1,5 +1,6 @@
 USE glo2005;
-INSERT INTO Genres (genre_id, genre_name) values
+
+INSERT INTO Genres (genre_id, genre_name) VALUES
 (1, 'Grunge'),
 (2, 'Alternative'),
 (3, 'Rock'),

@@ -6,6 +6,8 @@ import Album from './views/Album.vue'
 import Profile from "./views/Profile";
 import Signup from "./views/Signup";
 import PlaylistView from "./views/PlaylistView";
+import Artist from "./views/Artist";
+import Search from './views/Search.vue'
 
 Vue.use(Router);
 
@@ -29,9 +31,14 @@ export default new Router({
             component: Login
         },
         {
-            path: '/album',
+            path: '/artist/:artist_id',
+            name: 'artist',
+            component: Artist,
+        },
+        {
+            path: '/album/:album_id',
             name: 'album',
-            component: Album
+            component: Album,
         },
         {
             path: '/profile',
@@ -47,6 +54,26 @@ export default new Router({
             path: '/playlist/:playlistId',
             name: 'playlist',
             component: PlaylistView
-        }
+        },
+        {
+            path: '/search/albums/:title',
+            name: 'searchByAlbum',
+            component: Search
+        },
+        {
+            path: '/search',
+            name: 'search',
+            component: Search
+        },
+        {
+            path: '/search/artists/:artist_name',
+            name: 'searchByArtists',
+            component: Search
+        },
+        {
+            path: '/search/songs/:id',
+            name: 'searchBySong',
+            component: Search
+        },
     ]
 })

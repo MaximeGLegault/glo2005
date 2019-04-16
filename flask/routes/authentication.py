@@ -3,7 +3,7 @@ from functools import wraps
 from flask import Blueprint, request, make_response, jsonify
 from werkzeug.exceptions import BadRequest
 
-from domain.user_service import UserService, ConflictSignup
+from domain.user_service import UserService, ConflictSignup, CannotLogin
 import re
 
 from infrastructure.jwt_service import JWTService, InvalidToken
@@ -29,13 +29,16 @@ def login_required(f):
         _, _, token = token.partition("Bearer ")
 
         try:
-            username = JWTService().decode_token(token)
+            username, user_id = JWTService().decode_token(token)
         except InvalidToken:
             response = jsonify({"message": "you need to pass a token!"})
             response.status_code = 401
             return response
 
-        return f(username, *args, **kwargs)
+        kwargs['username'] = username
+        kwargs["user_id"] = user_id
+
+        return f(*args, **kwargs)
     return decorated_function
 
 
@@ -70,7 +73,8 @@ def signup():
 
 @authentication.route("/token", methods=['GET'])
 @login_required
-def get_token_info(username):
+def get_token_info(**kwargs):
+    username = kwargs['username']
 
     return jsonify({"message": "this token is valid", "username": username})
 
@@ -132,6 +136,13 @@ def init_authentication_error_handler(app):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
+
+    @app.errorhandler(CannotLogin)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+
 
 
 class InvalidCredentials(Exception):

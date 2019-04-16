@@ -77,7 +77,8 @@
 
 
         async created() {
-            await api.getAlbum(10000003).then(value => {
+            let album_id = this.$route.params.album_id ? this.$route.params.album_id : 10000002;
+            await api.getAlbum(album_id).then(value => {
                 this.album = value;
             });
         }

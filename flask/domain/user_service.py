@@ -14,10 +14,11 @@ class UserService:
 
     def login(self, username: str, password: str) -> str:
         user = self.user_repository.find_username(username)
-        self.password_hasher.check_password_hash(password, user.hashed_password)
-        token = self.jwt_service.create_token(user.username, user.email)
+        if self.password_hasher.check_password_hash(password, user.hashed_password):
+            token = self.jwt_service.create_token(user.username, user.email, user.user_id)
 
-        return token
+            return token
+        raise CannotLogin("username or password is wrong")
 
     def signup(self, username: str, email: str, password: str) -> str:
         is_username_free = self.user_repository.is_username_free(username)
@@ -27,15 +28,33 @@ class UserService:
         if not is_email_free:
             raise ConflictSignup("email is already in use")
         hashed_password = self.password_hasher.generate_password_hash(password)
-        user = User(username, email, hashed_password)
-        self.user_repository.save_new(user)
-        token = self.jwt_service.create_token(user.username, user.email)
+        user = User()
+        user.username = username
+        user.email = email
+        user.hashed_password = hashed_password
+        user.user_id = self.user_repository.save_new(user)
+        token = self.jwt_service.create_token(user.username, user.email, user.user_id)
 
         return token
 
 
 class ConflictSignup(Exception):
     status_code = 409
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+class CannotLogin(Exception):
+    status_code = 401
 
     def __init__(self, message, status_code=None, payload=None):
         Exception.__init__(self)

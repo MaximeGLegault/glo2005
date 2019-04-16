@@ -4,10 +4,10 @@ from typing import Dict
 class Album:
     def __init__(self):
         self.album_id = 0
+        self.title = ""
         self.year = 0
         self.genre_id = 0
         self.genre_name = ""
-        self.title = ""
         self.artist_id = 0
         self.artist_name = ""
         self.songs = []
