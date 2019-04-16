@@ -3,7 +3,7 @@ from functools import wraps
 from flask import Blueprint, request, make_response, jsonify
 from werkzeug.exceptions import BadRequest
 
-from domain.user_service import UserService, ConflictSignup
+from domain.user_service import UserService, ConflictSignup, CannotLogin
 import re
 
 from infrastructure.jwt_service import JWTService, InvalidToken
@@ -136,6 +136,13 @@ def init_authentication_error_handler(app):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
+
+    @app.errorhandler(CannotLogin)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+
 
 
 class InvalidCredentials(Exception):

@@ -14,10 +14,11 @@ class UserService:
 
     def login(self, username: str, password: str) -> str:
         user = self.user_repository.find_username(username)
-        self.password_hasher.check_password_hash(password, user.hashed_password)
-        token = self.jwt_service.create_token(user.username, user.email, user.user_id)
+        if self.password_hasher.check_password_hash(password, user.hashed_password):
+            token = self.jwt_service.create_token(user.username, user.email, user.user_id)
 
-        return token
+            return token
+        raise CannotLogin("username or password is wrong")
 
     def signup(self, username: str, email: str, password: str) -> str:
         is_username_free = self.user_repository.is_username_free(username)
@@ -39,6 +40,21 @@ class UserService:
 
 class ConflictSignup(Exception):
     status_code = 409
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+class CannotLogin(Exception):
+    status_code = 401
 
     def __init__(self, message, status_code=None, payload=None):
         Exception.__init__(self)
