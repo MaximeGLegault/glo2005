@@ -9,8 +9,10 @@ search = Blueprint("search", __name__, url_prefix="/api")
 @search.route("/search/albums/<title>", methods=['GET'])
 def search_album(title):
     print("search_album called")
-    album = AlbumService().search_album(title)
-    return jsonify(album.to_dict())
+    albums_list = AlbumService().search_album(title)
+    print("rendu ici")
+    return jsonify([album.to_dict() for album in albums_list])
+
 
 
 @search.route("/search/artists/<name>", methods=['GET'])
