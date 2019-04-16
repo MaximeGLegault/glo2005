@@ -11,7 +11,7 @@
                 <router-link to="/Artists"><span class="button">Artists</span></router-link>
             </div>
             <div>
-                <router-link to="/Album"><span class="button">Albums</span></router-link>
+                <router-link :to="{name: 'album', params: {album_id: 0}}"><span class="button">Albums</span></router-link>
             </div>
             <div id="menuSearch" class="menuSmSearch">
                 <div class="form">
