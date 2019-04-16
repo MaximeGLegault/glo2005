@@ -17,10 +17,3 @@ def get_all_songs_from_album(album_id: int):
     songs_from_album = SongService().get_all_song_from_album(album_id)
 
     return jsonify([song.to_dict() for song in songs_from_album])
-
-
-@songs.route("/songs/<int:song_id>", methods=['GET'])
-def get_particular_song(song_id: int):
-    song = SongService().get_song(song_id)
-
-    return jsonify(song.to_dict())

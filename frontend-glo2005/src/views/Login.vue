@@ -74,21 +74,21 @@
 <!--//     messageErr: '',-->
 <!--//     messageLog: ''-->
 <!--// }),-->
-// methods: {
-//     ...mapActions([]),
-//     async login() {
-//         await api.loginUser(this.user_email, this.user_password)
-//             .then((value) => {
-//                 this.$store.state.user = value.data.name;
-//                 this.messageErr = '';
-//                 this.messageLog = 'You\'re now log in';
-//                 Cookies.set('token', value.data.token);
-//                 window.location = '/';
-//             }).catch(() => {
-//                 this.messageErr = 'user not found, check your username and password';
-//                 this.messageLog = '';
-//                 this.$store.state.user = '';
-//             });
+<!--// methods: {-->
+<!--//     ...mapActions([]),-->
+<!--//     async login() {-->
+<!--//         await api.loginUser(this.user_email, this.user_password)-->
+<!--//             .then((value) => {-->
+<!--//                 this.$store.state.user = value.data.name;-->
+<!--//                 this.messageErr = '';-->
+<!--//                 this.messageLog = 'You\'re now log in';-->
+<!--//                 Cookies.set('token', value.data.token);-->
+<!--//                 window.location = '/';-->
+<!--//             }).catch(() => {-->
+<!--//                 this.messageErr = 'user not found, check your username and password';-->
+<!--//                 this.messageLog = '';-->
+<!--//                 this.$store.state.user = '';-->
+<!--//             });-->
 <!--//     }-->
 <!--// }-->
 <!--// };-->
@@ -103,6 +103,8 @@
 
     h1 {
         align-self: center;
+        padding-bottom: 70px;
+        padding-top: 20px;
     }
 
     #inputDiv {
