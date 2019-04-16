@@ -12,12 +12,9 @@
             <b class ="errorMessage">{{this.prettySearchType}} not found</b>
         </div>
         <span class="typeButtons">
-            <input @click="changeType('global')" type="radio" class="radio" id="global" name="searchType" value="global" v-model="searchType" checked><label for="global">All result</label>
-      <input @click="changeType('albums')" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="searchType"><label for="albums">Albums</label>
+      <input @click="changeType('albums')" type="radio" class="radio" id="albums" name="searchType" value="albums" v-model="searchType" checked><label for="albums">Albums</label>
       <input @click="changeType('artists')" type="radio" class="radio" id="artists" name="searchType" value="artists" v-model="searchType"><label for="artists">Artists</label>
       <input @click="changeType('songs')" type="radio" class="radio" id="songs" name="searchType" value="songs" v-model="searchType"><label for="songs">Songs</label>
-      <input @click="changeType('playlists')" type="radio" class="radio" id="playlists" name="searchType" value="playlists" v-model="searchType"><label for="playlists">Playlists</label>
-      <input @click="changeType('users')" type="radio" class="radio" id="users" name="searchType" value="users" v-model="searchType"><label for="users">Users</label>
         </span>
     </div>
 </template>
@@ -63,6 +60,7 @@
                 }
                 else{
                     this.noSearchTerm = true;
+                    this.$emit('update', { searchTerm: this.searchTerm, searchType: this.searchType, results: this.results });
                     this.results = null;
                 }
             },
@@ -77,12 +75,6 @@
                 }
                 else if(picked === "songs"){
                     this.prettySearchType = "Song";
-                }
-                else if(picked === "playlists"){
-                    this.prettySearchType = "Playlist";
-                }
-                else if(picked === "users"){
-                    this.prettySearchType = "User";
                 }
             },
             init(){

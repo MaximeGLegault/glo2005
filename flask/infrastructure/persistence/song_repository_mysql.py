@@ -4,6 +4,8 @@ from mysql.connector import MySQLConnection
 
 from domain.song import Song
 
+class SongNotFound(Exception):
+    pass
 
 class SongRepositoryMysql:
     def __init__(self, database_connector: MySQLConnection):
@@ -19,7 +21,7 @@ class SongRepositoryMysql:
         for (song_id, album_id, artist_id, title, duration) in cursor:
             song.song_id = song_id
             song.artist_name = artist_id
-            song.albumId = album_id
+            song.album_id = album_id
             song.title = title
             song.duration = duration
 
@@ -36,8 +38,8 @@ class SongRepositoryMysql:
         for (song_id, album_id, artist_id, title, duration) in cursor:
             song = Song()
             song.song_id = song_id
-            song.artist_name = artist_id
-            song.albumId = album_id
+            song.artist_id = artist_id
+            song.album_id = album_id
             song.title = title
             song.duration = duration
 
@@ -46,3 +48,38 @@ class SongRepositoryMysql:
         cursor.close()
         return songs
 
+    def search_by_title(self, title_song):
+        cursor = self.database_connector.cursor()
+        query = "SELECT * FROM Songs WHERE title LIKE '%"+title_song+"%'"
+
+        cursor.execute(query)
+
+        results = cursor.fetchall()
+
+        if cursor.rowcount == 0:
+            cursor.close()
+            raise SongNotFound()
+
+        songs = []
+        for row in results:
+            song = Song()
+            song.song_id = row[0]
+            song.album_id = row[1]
+            song.artist_id = row[2]
+            song.title = row[3]
+            song.duration = row[4]
+            songs.append(song)
+
+        for song in songs:
+            query = "SELECT title FROM Albums WHERE album_id = %s"
+            cursor.execute(query, (song.album_id,))
+            album_name = cursor.fetchone()
+            song.album_name = album_name[0]
+
+            query = "SELECT artist_name FROM Artists WHERE artist_id = %s"
+            cursor.execute(query, (song.artist_id,))
+            artist_name = cursor.fetchone()
+            song.artist_name = artist_name[0]
+
+        cursor.close()
+        return songs

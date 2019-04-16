@@ -6,9 +6,7 @@
         <search-bar class="searchBar" v-bind:targetPath="path" v-bind:name="typeOfSearch" v-on:update="handler($event)"/>
         <search-result-album v-bind:results.sync="results" v-bind:searchTerm="searchTerm" v-model="results" v-if="searchType==='albums' && searchTerm"/>
         <search-result-artist v-bind:results.sync="results" v-bind:searchTerm="searchTerm" v-if="searchType==='artists' && searchTerm"/>
-        <search-result-song v-if="searchType==='songs' && searchTerm"/>
-        <search-result-playlist v-if="searchType==='playlists' && searchTerm"/>
-        <search-result-user v-if="searchType==='users' && searchTerm"/>
+        <search-result-song v-bind:results.sync="results" v-bind:searchTerm="searchTerm" v-if="searchType==='songs' && searchTerm"/>
     </div>
 </template>
 
@@ -19,8 +17,6 @@
     import SearchResultAlbum from "./SearchResultAlbum";
     import SearchResultArtist from "./SearchResultArtist";
     import SearchResultSong from "./SearchResultSong";
-    import SearchResultUser from "./SearchResultUser";
-    import SearchResultPlaylist from "./SearchResultPlaylist";
 
     export default {
         name: 'search',
@@ -29,8 +25,6 @@
             'search-result-album': SearchResultAlbum,
             'search-result-artist': SearchResultArtist,
             'search-result-song': SearchResultSong,
-            'search-result-user': SearchResultUser,
-            'search-result-playlist': SearchResultPlaylist,
             'search-bar': SearchBar,
         },
         methods: {
