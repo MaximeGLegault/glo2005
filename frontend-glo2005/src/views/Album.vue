@@ -1,6 +1,5 @@
 <template>
     <playlist v-if="this.album" v-bind:songs="album.songs" v-bind:title="album.title"/>
-
 </template>
 
 <script>
@@ -14,8 +13,69 @@
             Playlist
         },
         data: () => ({
-            album: []
+
+            album: {album_id: 1,
+                title: 'If Purpose Each',
+                songs: [{
+                    song_id: 1,
+                    artist_name: "Participant Development",
+                    genre_name: "Grunge",
+                    title: "Reality Live Full Arm",
+                    duration: 197,
+                    album_name: "If Purpose Each",
+                    year: 2016
+                },
+                    {
+                        song_id: 1,
+                        artist_name: "Participant Development",
+                        genre_name: "Grunge",
+                        title: "Half Study Sex Determine Door",
+                        duration: 197,
+                        album_name: "If Purpose Each",
+                        year: 2016
+                    },
+                    {
+                        song_id: 2,
+                        artist_name: "Participant Development",
+                        genre_name: "Grunge",
+                        title: "Color Cancer",
+                        duration: 197,
+                        album_name: "If Purpose Each",
+                        year: 2016
+                    },
+                    {
+                        song_id: 3,
+                        artist_name: "Participant Development",
+                        genre_name: "Grunge",
+                        title: "Single Exactly Almost Official",
+                        duration: 197,
+                        album_name: "If Purpose Each",
+                        year: 2016
+                    },
+                    {
+                        song_id: 4,
+                        artist_name: "Participant Development",
+                        genre_name: "Grunge",
+                        title: "Question Nothing Task Must Different View Score",
+                        duration: 197,
+                        album_name: "If Purpose Each",
+                        year: 2016
+                    },
+                    {
+                        song_id: 5,
+                        artist_name: "Participant Development",
+                        genre_name: "Grunge",
+                        title: "Again Later Then",
+                        duration: 197,
+                        album_name: "If Purpose Each",
+                        year: 2016
+                    },
+                ]
+            }
         }),
+
+
+
         async created() {
             await api.getAlbum(10000003).then(value => {
                 this.album = value;

@@ -1,4 +1,5 @@
 <template>
+
     <ul class="list">
 
         <div class="list-title" >{{title}}</div>
@@ -22,6 +23,9 @@
             <div class="year">
                 Year
             </div>
+            <div class="like"></div>
+            <div class="options"></div>
+
         </li>
         <SongItem v-for="song of songs" v-bind:key="song.song_id" v-model="songs" :song="song"/>
     </ul>
@@ -92,4 +96,14 @@
         flex-grow: 1;
     }
 
+    .like {
+        padding: 10px;
+        flex-basis: 30px;
+        flex-grow: 0.1;
+    }
+    .options {
+        padding: 10px;
+        flex-basis: 175px;
+        flex-grow: 0.1;
+    }
 </style>
