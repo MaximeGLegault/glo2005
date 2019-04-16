@@ -55,40 +55,11 @@
         justify-content: space-evenly;
         flex-wrap: wrap;
         align-items: flex-start;
-
-
     }
-
     .song > * {
         padding: 10px;
         flex-basis: 0;
         flex-grow: 1;
     }
-
-    /*.title{*/
-        /*flex-grow: 1;*/
-    /*}*/
-
-    /*.artist{*/
-        /*flex-grow: 1;*/
-
-    /*}*/
-
-    /*.album{*/
-        /*flex-grow: 1;*/
-
-    /*}*/
-    /*.genre{*/
-        /*flex-grow: 1;*/
-
-    /*}*/
-    /*.duration{*/
-        /*flex-grow: 1;*/
-
-    /*}*/
-    /*.year{*/
-        /*flex-grow: 1;*/
-
-    /*}*/
 
 </style>

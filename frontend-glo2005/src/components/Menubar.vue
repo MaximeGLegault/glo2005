@@ -8,10 +8,13 @@
                 <router-link to="/"><span class="button">Home</span></router-link>
             </div>
             <div>
-                <router-link to="/Artists"><span class="button">Artists</span></router-link>
+                <router-link to="/songs"><span class="button">Songs</span></router-link>
             </div>
             <div>
-                <router-link :to="{name: 'album', params: {album_id: 0}}"><span class="button">Albums</span></router-link>
+                <router-link to="/artists"><span class="button">Artists</span></router-link>
+            </div>
+            <div>
+                <router-link to="/albums"><span class="button">Albums</span></router-link>
             </div>
             <div>
                 <router-link to="/Search"><span class="button">Search</span></router-link>
@@ -30,9 +33,6 @@
             searchTerm: ""
         }),
         methods: {
-            goSearch() {
-                this.$router.push("Album");
-            }
         }
     }
 </script>

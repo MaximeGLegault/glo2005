@@ -9,6 +9,7 @@ from routes.home import home
 from routes.playlists import playlists, init_playlists_error_handler
 from routes.profiles import profiles
 from routes.songs import songs
+from routes.artists import artists
 from routes.search import search, init_search_error_handler
 
 
@@ -34,6 +35,7 @@ def create_app():
     app.register_blueprint(songs)
     app.register_blueprint(profiles)
     app.register_blueprint(playlists)
+    app.register_blueprint(artists)
 
     return app
 

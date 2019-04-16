@@ -2,7 +2,7 @@ from typing import List
 
 from mysql.connector import MySQLConnection
 
-from domain.Playlist import Playlist
+from domain.playlist import Playlist
 from domain.song import Song
 
 

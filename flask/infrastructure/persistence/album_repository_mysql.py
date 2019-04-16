@@ -58,6 +58,37 @@ class AlbumRepositoryMysql:
         album.songs = songs
         return album
 
+    def retrive_all(self):
+        cursor = self.database_connector.cursor()
+        query = "SELECT * FROM Albums"
+
+        cursor.execute(query)
+
+        results = cursor.fetchall()
+
+        albums = []
+        for row in results:
+            album = Album()
+            album.album_id = row[0]
+            album.title = row[1]
+            album.year = row[2]
+            album.artist_id = row[3]
+            album.genre_id = row[4]
+            albums.append(album)
+
+        for album in albums:
+            query = "SELECT genre_name FROM Genres WHERE genre_id = %s"
+            cursor.execute(query, (album.genre_id,))
+            genre_name, = cursor.fetchone()
+            album.genre_name = genre_name
+
+            query = "SELECT artist_name FROM Artists WHERE artist_id = %s"
+            cursor.execute(query, (album.artist_id,))
+            artist_name, = cursor.fetchone()
+            album.artist_name = artist_name
+
+        cursor.close()
+        return albums
 
     def search_by_album_title(self, title_album):
         cursor = self.database_connector.cursor()

@@ -50,4 +50,26 @@ class ArtistsRepositoryMySql:
         cursor.close()
         return artists
 
+    def get_all_artists(self):
+        cursor = self.database_connector.cursor()
+        query = "SELECT * FROM Artists"
+
+        cursor.execute(query)
+
+        results = cursor.fetchall()
+
+        if cursor.rowcount == 0:
+            cursor.close()
+            raise ArtistNotFound()
+
+        artists = []
+        for row in results:
+            artist = Artist()
+            artist.artist_id = row[0]
+            artist.artist_name = row[1]
+            artist.year_active = row[2]
+            artists.append(artist)
+
+        cursor.close()
+        return artists
 

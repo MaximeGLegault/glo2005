@@ -8,6 +8,9 @@ import Signup from "./views/Signup";
 import PlaylistView from "./views/PlaylistView";
 import Artist from "./views/Artist";
 import Search from './views/Search.vue'
+import allAlbums from './views/allAlbums'
+import allArtists from './views/allArtists'
+import allSongs from './views/allSongs'
 
 Vue.use(Router);
 
@@ -39,6 +42,21 @@ export default new Router({
             path: '/album/:album_id',
             name: 'album',
             component: Album,
+        },
+        {
+            path: '/songs',
+            name: 'allSongs',
+            component: allSongs,
+        },
+        {
+            path: '/albums',
+            name: 'allAlbums',
+            component: allAlbums,
+        },
+        {
+            path: '/artists',
+            name: 'allArtists',
+            component: allArtists,
         },
         {
             path: '/profile',

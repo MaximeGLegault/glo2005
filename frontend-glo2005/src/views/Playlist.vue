@@ -51,9 +51,7 @@
 
 <style scoped>
 
-
     .list {
-
         border:           5px solid #4f4f4f;
         border-radius:    8px;
         margin:           30px 30px 30px 30px;
@@ -63,18 +61,14 @@
         display: flex;
         flex-direction: column;
     }
-
     .list > * {
         border-bottom: 1px solid white;
-
     }
-
     .list-title {
         font-size: 45px;
         border: 0px;
         padding-bottom: 30px;
     }
-
     .header {
         font-size: 25px;
         display: flex;
@@ -82,10 +76,7 @@
         justify-content: space-evenly;
         flex-wrap: wrap;
         align-items: flex-start;
-
-
     }
-
     .header > * {
         padding: 10px;
         flex-basis: 0;

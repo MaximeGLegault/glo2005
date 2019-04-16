@@ -13,13 +13,16 @@ class ArtistService:
     def get_Artist(self, artist_id: int) -> Artist:
         return self.artist_repository.retrive(artist_id)
 
-
     def search_artist(self, name):
         try:
             artists = self.artist_repository.search_by_artist_name(name)
         except ArtistNotFound:
             raise ImpossibleToGetArtist("Artist with name %s does not exist".format(name))
         return artists
+
+
+    def get_all_artists(self):
+        return self.artist_repository.get_all_artists()
 
 class ImpossibleToGetArtist(Exception):
 

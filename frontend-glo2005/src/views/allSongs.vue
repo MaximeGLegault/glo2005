@@ -1,66 +1,66 @@
 <template>
     <div>
-        <h2>Results for Artists with name {{this.searchQuery}}</h2>
+        <h1>Songs</h1>
+        <div class="loadingSymbolPadding">
+            <div class="loading" v-if="loading"></div>
+        </div>
         <table class="list">
-        <tr class="header">
-            <th>Name</th>
-            <th>Years active</th>
-        </tr>
-        <tr class="tableItem" v-for="artist of artists" v-bind:key="artist">
-            <td v-on:click="artistNameClicked(artist.artist_id)">{{artist.artist_name}}</td>
-            <td>{{artist.year_active}}</td>
-        </tr>
-    </table>
+            <tr class="header">
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>Duration</th>
+            </tr>
+            <tr class="tableItem" v-for="(song, index) in songs" :key="index">
+                <td>{{song.title}}</td>
+                <td v-on:click="artistNameClicked(song.artist_id)">{{song.artist_name}}</td>
+                <td v-on:click="albumNameClicked(song.album_id)">{{song.album_name}}</td>
+                <td>{{song.duration}}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
+
 <script>
+    import api from "../lib/api";
 
     export default {
-        name: "SearchResultArtist",
-        props: ['results', 'searchTerm'],
-        watch: {
-            results(newValue) {
-                if(newValue){
-                    this.init();
-                }
-                else {
-                    this.artists = [];
-                }
-            }
-        },
+        name: "allSongs",
         data() {
             return {
-                artists: [
+                loading: false,
+                songs: [
+                    {song_id: 0},
+                    {title: ''},
                     {artist_name: ''},
-                    {year_active: 0}
+                    {album_name: ''},
+                    {duration: 0},
+
                 ]
             };
         },
         methods:{
-            init() {
-                this.artists = [];
-                this.artists.artist_name = '';
-                this.artists.year_active = 0;
-                for (var i = 0; i < this.rawResult.length; i++) {
-                    this.artists[i] = [];
-                    this.artists[i].artist_name = this.rawResult[i]["artist_name"];
-                    this.artists[i].year_active = this.rawResult[i]["year_active"];
-                }
-            },
             artistNameClicked(artist_id) {
                 this.$router.push({ path: `/artist/${artist_id}` })
-            }
-        },
-        computed: {
-            rawResult () {
-                return this.results;
             },
-            searchQuery () {
-                return this.searchTerm;
+            albumNameClicked(album_id) {
+                this.$router.push({ path: `/album/${album_id}` })
+            },
+            async init() {
+                this.songs = [];
+                this.songs.song_id = 0;
+                this.songs.title = '';
+                this.songs.artist_name = '';
+                this.songs.album_name = '';
+                this.songs.duration = 0;
+                await api.getAllSongs().then(value => this.songs = value).catch(value => console.log(value));
+                console.log(this.songs);
+                this.loading = false;
             }
         },
         created() {
+            this.loading = true;
             this.init();
         },
         updated() {
@@ -71,7 +71,6 @@
 </script>
 
 <style scoped>
-
     h1 {
         text-align: center;
         font-size: 2em;
@@ -103,7 +102,7 @@
         margin-top:auto;
         border:           5px solid #4f4f4f;
         border-radius:    8px;
-        padding: 40px;
+        padding:          40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
         display: flex;
@@ -113,14 +112,6 @@
     .list > * {
         border-bottom: 1px solid white;
 
-    }
-
-    .list-title {
-        align-self: center;
-        font-size: 45px;
-        border: 0px;
-        padding-bottom: 30px;
-        padding-left: 30px;
     }
 
     .header {
@@ -153,5 +144,4 @@
         flex-basis: 0;
         flex-grow: 1;
     }
-
 </style>

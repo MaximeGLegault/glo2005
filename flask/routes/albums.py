@@ -11,3 +11,8 @@ def get_album(album_id: int):
     return jsonify(album.to_dict())
 
 
+@albums.route("/albums", methods=['GET'])
+def get_all_albums():
+    albums = AlbumService().get_all_albums()
+    return jsonify([album.to_dict() for album in albums])
+

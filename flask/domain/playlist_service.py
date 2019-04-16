@@ -1,6 +1,6 @@
 from flask import current_app
 
-from domain.Playlist import Playlist
+from domain.playlist import Playlist
 from infrastructure.persistence.playlist_repository_mysql import PlaylistRepositoryMysql, PlaylistNotFound
 
 

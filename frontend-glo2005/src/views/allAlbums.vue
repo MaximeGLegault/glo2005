@@ -1,66 +1,66 @@
 <template>
     <div>
-        <h2>Results for Artists with name {{this.searchQuery}}</h2>
+        <h1>Albums</h1>
+        <div class="loadingSymbolPadding">
+        <div class="loading" v-if="loading"></div>
+        </div>
         <table class="list">
-        <tr class="header">
-            <th>Name</th>
-            <th>Years active</th>
-        </tr>
-        <tr class="tableItem" v-for="artist of artists" v-bind:key="artist">
-            <td v-on:click="artistNameClicked(artist.artist_id)">{{artist.artist_name}}</td>
-            <td>{{artist.year_active}}</td>
-        </tr>
-    </table>
+            <tr class="header">
+                <th>Title</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Artist</th>
+            </tr>
+            <tr class="tableItem" v-for="album of albums" v-bind:key="album">
+                <td>{{album.title}}</td>
+                <td>{{album.year}}</td>
+                <td>{{album.genre}}</td>
+                <td>{{album.artist_name}}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
+
 <script>
+    import api from "../lib/api";
 
     export default {
-        name: "SearchResultArtist",
-        props: ['results', 'searchTerm'],
-        watch: {
-            results(newValue) {
-                if(newValue){
-                    this.init();
-                }
-                else {
-                    this.artists = [];
-                }
-            }
-        },
+        name: "allAlbums",
         data() {
             return {
-                artists: [
+                loading: false,
+                albums: [
+                    {title: ''},
+                    {album_id: 0},
+                    {year: 0},
+                    {artist_id: 0},
+                    {genre_id: 0},
                     {artist_name: ''},
-                    {year_active: 0}
+                    {genre: ''},
                 ]
             };
         },
         methods:{
-            init() {
-                this.artists = [];
-                this.artists.artist_name = '';
-                this.artists.year_active = 0;
-                for (var i = 0; i < this.rawResult.length; i++) {
-                    this.artists[i] = [];
-                    this.artists[i].artist_name = this.rawResult[i]["artist_name"];
-                    this.artists[i].year_active = this.rawResult[i]["year_active"];
-                }
+            albumTitleClicked(album_id) {
+                this.$router.push({ path: `/album/${album_id}` })
             },
-            artistNameClicked(artist_id) {
+            albumArtistNameClicked(artist_id) {
                 this.$router.push({ path: `/artist/${artist_id}` })
-            }
-        },
-        computed: {
-            rawResult () {
-                return this.results;
             },
-            searchQuery () {
-                return this.searchTerm;
+            async init() {
+                this.albums = [];
+                this.albums.title = '';
+                this.albums.album_id = 0;
+                this.albums.year = 0;
+                this.albums.artist_name = '';
+                this.albums.genre = '';
+                await api.getAllAlbums().then(value => this.albums = value).catch(value => console.log(value));
+                this.loading = false;
             }
         },
         created() {
+            this.loading = true;
             this.init();
         },
         updated() {
@@ -71,7 +71,6 @@
 </script>
 
 <style scoped>
-
     h1 {
         text-align: center;
         font-size: 2em;
