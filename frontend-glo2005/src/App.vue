@@ -12,8 +12,7 @@
         components: {
             'Menubar':
             Menubar
-        }
-        ,
+        },
     }
 </script>
 

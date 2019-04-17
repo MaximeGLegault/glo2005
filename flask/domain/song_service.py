@@ -23,6 +23,9 @@ class SongService:
             raise ImpossibleToGetSong("Song with title %s does not exist".format(title))
         return songs
 
+    def get_all_songs(self):
+        return self.song_repository.get_all_songs()
+
 class ImpossibleToGetSong(Exception):
 
     def __init__(self, message):

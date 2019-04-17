@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h1>Results for songs with title containing: {{this.searchQuery}}</h1>
+        <h1>Songs</h1>
+        <div class="loadingSymbolPadding">
+            <div class="loading" v-if="loading"></div>
+        </div>
         <table class="list">
             <tr class="header">
                 <th>Title</th>
@@ -8,7 +11,7 @@
                 <th>Album</th>
                 <th>Duration</th>
             </tr>
-            <tr class="tableItem" v-for="song of songs" v-bind:key="song">
+            <tr class="tableItem" v-for="(song, index) in songs" :key="index">
                 <td>{{song.title}}</td>
                 <td v-on:click="artistNameClicked(song.artist_id)">{{song.artist_name}}</td>
                 <td v-on:click="albumNameClicked(song.album_id)">{{song.album_name}}</td>
@@ -18,26 +21,18 @@
     </div>
 </template>
 
+
 <script>
+    import api from "../lib/api";
 
     export default {
-        name: "SearchResultSong",
-        props: ['results', 'searchTerm'],
-        watch: {
-            results(newValue) {
-                if(newValue){
-                    this.init();
-                }
-                else {
-                    this.songs = [];
-                }
-            }
-        },
+        name: "allSongs",
         data() {
             return {
+                loading: false,
                 songs: [
+                    {song_id: 0},
                     {title: ''},
-                    {album_id: 0},
                     {artist_name: ''},
                     {album_name: ''},
                     {duration: 0},
@@ -46,37 +41,26 @@
             };
         },
         methods:{
-            init() {
-                this.songs = [];
-                this.songs.title = '';
-                this.songs.artist_name = '';
-                this.songs.album_name = '';
-                this.songs.duration = 0;
-                for (var i = 0; i < this.rawResult.length; i++) {
-                    this.songs[i] = [];
-                    this.songs[i].album_id = this.rawResult[i]["album_id"];
-                    this.songs[i].title = this.rawResult[i]["title"];
-                    this.songs[i].artist_name = this.rawResult[i]["artist_name"];
-                    this.songs[i].album_name = this.rawResult[i]["album_name"];
-                    this.songs[i].duration = this.rawResult[i]["duration"];
-                }
-            },
             artistNameClicked(artist_id) {
                 this.$router.push({ path: `/artist/${artist_id}` })
             },
             albumNameClicked(album_id) {
                 this.$router.push({ path: `/album/${album_id}` })
-            }
-        },
-        computed: {
-            rawResult () {
-                return this.results;
             },
-            searchQuery () {
-                return this.searchTerm;
+            async init() {
+                this.songs = [];
+                this.songs.song_id = 0;
+                this.songs.title = '';
+                this.songs.artist_name = '';
+                this.songs.album_name = '';
+                this.songs.duration = 0;
+                await api.getAllSongs().then(value => this.songs = value).catch(value => console.log(value));
+                console.log(this.songs);
+                this.loading = false;
             }
         },
         created() {
+            this.loading = true;
             this.init();
         },
         updated() {
@@ -87,15 +71,29 @@
 </script>
 
 <style scoped>
-
     h1 {
         text-align: center;
         font-size: 2em;
     }
 
+    .loading {
+        margin-left:auto;
+        margin-right:auto;
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+    }
+
+    .loadingSymbolPadding {
+        padding-bottom: 27px;
     }
 
     .list {
@@ -104,7 +102,7 @@
         margin-top:auto;
         border:           5px solid #4f4f4f;
         border-radius:    8px;
-        padding: 40px;
+        padding:          40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
         display: flex;
@@ -146,5 +144,4 @@
         flex-basis: 0;
         flex-grow: 1;
     }
-
 </style>

@@ -23,6 +23,9 @@ class ArtistService:
     def get(self, artist_id: int) -> Artist:
         return self.artist_repository.get_with_album(artist_id)
 
+    def get_all_artists(self):
+        return self.artist_repository.get_all_artists()
+
 
 class ImpossibleToGetArtist(Exception):
 

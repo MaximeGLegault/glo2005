@@ -1,36 +1,31 @@
 <template>
     <div>
-        <h1>Results for artists with name containing: {{this.searchQuery}}</h1>
+        <h1>Artists</h1>
+        <div class="loadingSymbolPadding">
+            <div class="loading" v-if="loading"></div>
+        </div>
         <table class="list">
-        <tr class="header">
-            <th>Name</th>
-            <th>Years active</th>
-        </tr>
-        <tr class="tableItem" v-for="artist of artists" v-bind:key="artist">
-            <td v-on:click="artistNameClicked(artist.artist_id)">{{artist.artist_name}}</td>
-            <td>{{artist.year_active}}</td>
-        </tr>
-    </table>
+            <tr class="header">
+                <th>Name</th>
+                <th>Years active</th>
+            </tr>
+            <tr class="tableItem" v-for="artist of artists" v-bind:key="artist">
+                <td>{{artist.artist_name}}</td>
+                <td>{{artist.year_active}}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
+
 <script>
+    import api from "../lib/api";
 
     export default {
-        name: "SearchResultArtist",
-        props: ['results', 'searchTerm'],
-        watch: {
-            results(newValue) {
-                if(newValue){
-                    this.init();
-                }
-                else {
-                    this.artists = [];
-                }
-            }
-        },
+        name: "allArtists",
         data() {
             return {
+                loading: false,
                 artists: [
                     {artist_name: ''},
                     {year_active: 0}
@@ -38,29 +33,19 @@
             };
         },
         methods:{
-            init() {
+            artistNameClicked(artist_id) {
+                this.$router.push({ path: `/artist/${artist_id}` })
+            },
+            async init() {
                 this.artists = [];
                 this.artists.artist_name = '';
                 this.artists.year_active = 0;
-                for (var i = 0; i < this.rawResult.length; i++) {
-                    this.artists[i] = [];
-                    this.artists[i].artist_name = this.rawResult[i]["artist_name"];
-                    this.artists[i].year_active = this.rawResult[i]["year_active"];
-                }
-            },
-            artistNameClicked(artist_id) {
-                this.$router.push({ path: `/artist/${artist_id}` })
-            }
-        },
-        computed: {
-            rawResult () {
-                return this.results;
-            },
-            searchQuery () {
-                return this.searchTerm;
+                await api.getAllArtists().then(value => this.artists = value).catch(value => console.log(value));
+                this.loading = false;
             }
         },
         created() {
+            this.loading = true;
             this.init();
         },
         updated() {
@@ -71,12 +56,10 @@
 </script>
 
 <style scoped>
-
     h1 {
         text-align: center;
         font-size: 2em;
     }
-
     .loading {
         margin-left:auto;
         margin-right:auto;
@@ -103,7 +86,7 @@
         margin-top:auto;
         border:           5px solid #4f4f4f;
         border-radius:    8px;
-        padding: 40px;
+        padding:          40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
         display: flex;
@@ -153,5 +136,4 @@
         flex-basis: 0;
         flex-grow: 1;
     }
-
 </style>

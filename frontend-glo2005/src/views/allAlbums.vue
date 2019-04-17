@@ -1,41 +1,35 @@
 <template>
     <div>
-        <h1>Results for albums with title containing: {{this.searchQuery}}</h1>
-    <table class="list">
-        <tr class="header">
-            <th>Title</th>
-            <th>Year</th>
-            <th>Genre</th>
-            <th>Artist</th>
-        </tr>
-        <tr class="tableItem" v-for="album of albums" v-bind:key="album">
-            <td v-on:click="albumTitleClicked(album.album_id)">{{album.title}}</td>
-            <td>{{album.year}}</td>
-            <td>{{album.genre_name}}</td>
-            <td v-on:click="albumArtistNameClicked(album.artist_id)">{{album.artist_name}}</td>
-        </tr>
-    </table>
+        <h1>Albums</h1>
+        <div class="loadingSymbolPadding">
+        <div class="loading" v-if="loading"></div>
+        </div>
+        <table class="list">
+            <tr class="header">
+                <th>Title</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Artist</th>
+            </tr>
+            <tr class="tableItem" v-for="album of albums" v-bind:key="album">
+                <td v-on:click="albumTitleClicked(album.album_id)">{{album.title}}</td>
+                <td>{{album.year}}</td>
+                <td>{{album.genre}}</td>
+                <td v-on:click="albumArtistNameClicked(album.artist_id)">{{album.artist_name}}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
 
 <script>
+    import api from "../lib/api";
 
     export default {
-        name: "SearchResultAlbum",
-        props: ['results', 'searchTerm'],
-        watch: {
-            results(newValue) {
-                if(newValue){
-                    this.init();
-                }
-                else {
-                    this.albums = [];
-                }
-            }
-        },
+        name: "allAlbums",
         data() {
             return {
+                loading: false,
                 albums: [
                     {title: ''},
                     {album_id: 0},
@@ -43,43 +37,30 @@
                     {artist_id: 0},
                     {genre_id: 0},
                     {artist_name: ''},
-                    {genre_name: ''},
+                    {genre: ''},
                 ]
             };
         },
         methods:{
-            init() {
-                this.albums = [];
-                this.albums.title = '';
-                this.albums.album_id = 0;
-                this.albums.year = 0;
-                this.albums.artist_name = '';
-                this.albums.genre_name = '';
-                for (var i = 0; i < this.rawResult.length; i++) {
-                    this.albums[i] = [];
-                    this.albums[i].title = this.rawResult[i]["title"];
-                    this.albums[i].album_id = this.rawResult[i]["album_id"];
-                    this.albums[i].year = this.rawResult[i]["year"];
-                    this.albums[i].genre_name = this.rawResult[i]["genre"];
-                    this.albums[i].artist_name = this.rawResult[i]["artist_name"];
-                }
-            },
             albumTitleClicked(album_id) {
                 this.$router.push({ path: `/album/${album_id}` })
             },
             albumArtistNameClicked(artist_id) {
                 this.$router.push({ path: `/artist/${artist_id}` })
-            }
-        },
-        computed: {
-            rawResult () {
-                return this.results;
             },
-            searchQuery () {
-                return this.searchTerm;
+            async init() {
+                this.albums = [];
+                this.albums.title = '';
+                this.albums.album_id = 0;
+                this.albums.year = 0;
+                this.albums.artist_name = '';
+                this.albums.genre = '';
+                await api.getAllAlbums().then(value => this.albums = value).catch(value => console.log(value));
+                this.loading = false;
             }
         },
         created() {
+            this.loading = true;
             this.init();
         },
         updated() {
@@ -90,10 +71,20 @@
 </script>
 
 <style scoped>
-
     h1 {
         text-align: center;
         font-size: 2em;
+    }
+
+    .loading {
+        margin-left:auto;
+        margin-right:auto;
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
     }
 
     @keyframes spin {
@@ -161,6 +152,5 @@
         flex-basis: 0;
         flex-grow: 1;
     }
-
 
 </style>
