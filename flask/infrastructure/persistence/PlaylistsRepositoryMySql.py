@@ -8,14 +8,14 @@ class PlaylistsRepositoryMySql:
     def __init__(self, database_connector: MySQLConnection):
         self.database_connector = database_connector
 
-    def search_by_playlist(self, title: str) -> Playlist.title:
+    def search_by_playlist(self, title: str) -> str:
         cursor = self.database_connector.cursor()
         query = "SELECT * FROM Playlists WHERE title LIKE %s"
         cursor.execute(query, (title,))
 
-        title = None
+        playlist_title = None
         for (id, title) in cursor:
-            title = Playlist(title)
+            playlist_title = title
 
         cursor.close()
-        return title
+        return playlist_title

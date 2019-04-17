@@ -2,7 +2,7 @@
     <div>
         <h1>Albums</h1>
         <div class="loadingSymbolPadding">
-        <div class="loading" v-if="loading"></div>
+            <div class="loading" v-if="loading"></div>
         </div>
         <table class="list">
             <tr class="header">
@@ -11,11 +11,11 @@
                 <th>Genre</th>
                 <th>Artist</th>
             </tr>
-            <tr class="tableItem" v-for="album of albums" v-bind:key="album">
-                <td v-on:click="albumTitleClicked(album.album_id)">{{album.title}}</td>
+            <tr class="tableItem" v-for="album of albums" v-bind:key="album.album_id">
+                <td class="clickable" v-on:click="albumTitleClicked(album.album_id)">{{album.title}}</td>
                 <td>{{album.year}}</td>
                 <td>{{album.genre}}</td>
-                <td v-on:click="albumArtistNameClicked(album.artist_id)">{{album.artist_name}}</td>
+                <td class="clickable" v-on:click="albumArtistNameClicked(album.artist_id)">{{album.artist_name}}</td>
             </tr>
         </table>
     </div>
@@ -41,12 +41,12 @@
                 ]
             };
         },
-        methods:{
+        methods: {
             albumTitleClicked(album_id) {
-                this.$router.push({ path: `/album/${album_id}` })
+                this.$router.push({path: `/album/${album_id}`})
             },
             albumArtistNameClicked(artist_id) {
-                this.$router.push({ path: `/artist/${artist_id}` })
+                this.$router.push({path: `/artist/${artist_id}`})
             },
             async init() {
                 this.albums = [];
@@ -77,8 +77,8 @@
     }
 
     .loading {
-        margin-left:auto;
-        margin-right:auto;
+        margin-left: auto;
+        margin-right: auto;
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
         border-radius: 50%;
@@ -88,8 +88,12 @@
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     .loadingSymbolPadding {
@@ -97,11 +101,11 @@
     }
 
     .list {
-        margin-left:auto;
-        margin-right:auto;
-        margin-top:auto;
-        border:           5px solid #4f4f4f;
-        border-radius:    8px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        border: 5px solid #4f4f4f;
+        border-radius: 8px;
         padding: 40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
@@ -144,13 +148,21 @@
         justify-content: space-evenly;
         flex-wrap: wrap;
         align-items: flex-start;
-        cursor: pointer;
     }
 
     .tableItem > * {
         padding: 10px;
         flex-basis: 0;
         flex-grow: 1;
+    }
+
+    .clickable {
+        color: white;
+        cursor: pointer;
+    }
+
+    .clickable:hover {
+        color: #651fff;
     }
 
 </style>

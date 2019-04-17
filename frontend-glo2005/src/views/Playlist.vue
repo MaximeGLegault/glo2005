@@ -1,7 +1,7 @@
 <template>
     <ul class="list">
 
-        <div class="list-title" >{{title}}</div>
+        <div class="list-title">{{title}}</div>
         <li class="header">
             <div class="title">
                 Song
@@ -25,6 +25,7 @@
 
 <script>
     import SongItem from './Song';
+
     export default {
         name: "Playlist",
         components: {
@@ -34,13 +35,11 @@
             title: String,
             songs: Array
         },
-        methods:{
-
+        methods: {
         },
-        created(){
+        created() {
         }
     };
-
 
 
 </script>
@@ -48,23 +47,26 @@
 <style scoped>
 
     .list {
-        border:           5px solid #4f4f4f;
-        border-radius:    8px;
-        margin:           30px 30px 30px 30px;
-        padding:          40px;
+        border: 5px solid #4f4f4f;
+        border-radius: 8px;
+        margin: 30px 30px 30px 30px;
+        padding: 40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
         display: flex;
         flex-direction: column;
     }
+
     .list > * {
         border-bottom: 1px solid white;
     }
+
     .list-title {
         font-size: 45px;
         border: 0px;
         padding-bottom: 30px;
     }
+
     .header {
         font-size: 25px;
         display: flex;
@@ -73,6 +75,7 @@
         flex-wrap: wrap;
         align-items: flex-start;
     }
+
     .header > * {
         padding: 10px;
         flex-basis: 0;

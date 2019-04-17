@@ -27,7 +27,7 @@
                     <i class="material-icons">cancel</i>
                 </a>
             </div>
-            <a >{{ messageLog }}</a>
+            <a>{{ messageLog }}</a>
 
             <playlist-list v-if="this.playlists" :playlists="this.playlists"
                            v-on:changeTitle="editTitlePlaylist($event)"
@@ -101,6 +101,58 @@
 </script>
 
 <style scoped>
+    .btnCreatePlaylist {
+        color: white;
+        cursor: pointer;
+    }
+
+    .btnCreatePlaylist:hover {
+        color: #651fff;
+    }
+
+    #master {
+        text-align: center;
+        font-size: 2em;
+    }
+
+    ul {
+        margin-bottom: 0;
+    }
+
+    #playlistName {
+        border-right: solid 5px #111;
+        padding: 10px 10px;
+        width: 100%;
+        min-width: 150px;
+        min-height: 100vh;
+        background-color: #191919;
+        font-size: 1.5em;
+    }
+
+    .listPlName {
+        color: white;
+        cursor: pointer;
+    }
+
+    .listPlName:hover {
+        color: #651fff;
+    }
+
+    #addbutton {
+        display: inline;
+        margin-bottom: 5px;
+    }
+
+    #newPlaylist {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .input-field {
+        margin: 0;
+    }
+
     .btnCreatePlaylist {
         color: white;
         cursor: pointer;

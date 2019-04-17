@@ -9,8 +9,8 @@
                 <th>Name</th>
                 <th>Years active</th>
             </tr>
-            <tr class="tableItem" v-for="artist of artists" v-bind:key="artist">
-                <td>{{artist.artist_name}}</td>
+            <tr class="tableItem" v-for="artist of artists" v-bind:key="artist.artist_id">
+                <td class="clickable" @click="artistNameClicked(artist.artist_id)">{{artist.artist_name}}</td>
                 <td>{{artist.year_active}}</td>
             </tr>
         </table>
@@ -32,9 +32,9 @@
                 ]
             };
         },
-        methods:{
+        methods: {
             artistNameClicked(artist_id) {
-                this.$router.push({ path: `/artist/${artist_id}` })
+                this.$router.push({path: `/artist/${artist_id}`})
             },
             async init() {
                 this.artists = [];
@@ -60,9 +60,10 @@
         text-align: center;
         font-size: 2em;
     }
+
     .loading {
-        margin-left:auto;
-        margin-right:auto;
+        margin-left: auto;
+        margin-right: auto;
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
         border-radius: 50%;
@@ -72,8 +73,12 @@
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     .loadingSymbolPadding {
@@ -81,12 +86,12 @@
     }
 
     .list {
-        margin-left:auto;
-        margin-right:auto;
-        margin-top:auto;
-        border:           5px solid #4f4f4f;
-        border-radius:    8px;
-        padding:          40px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        border: 5px solid #4f4f4f;
+        border-radius: 8px;
+        padding: 40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
         display: flex;
@@ -128,12 +133,20 @@
         justify-content: space-evenly;
         flex-wrap: wrap;
         align-items: flex-start;
-        cursor: pointer;
     }
 
     .tableItem > * {
         padding: 10px;
         flex-basis: 0;
         flex-grow: 1;
+    }
+
+    .clickable {
+        color: white;
+        cursor: pointer;
+    }
+
+    .clickable:hover {
+        color: #651fff;
     }
 </style>
