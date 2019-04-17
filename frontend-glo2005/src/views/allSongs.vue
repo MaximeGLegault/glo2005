@@ -11,11 +11,8 @@
                 <th>Album</th>
                 <th>Duration</th>
             </tr>
-            <tr class="tableItem" v-for="(song, index) in songs" :key="index">
-                <td>{{song.title}}</td>
-                <td v-on:click="artistNameClicked(song.artist_id)">{{song.artist_name}}</td>
-                <td v-on:click="albumNameClicked(song.album_id)">{{song.album_name}}</td>
-                <td>{{song.duration}}</td>
+            <tr v-for="song in songs" :key="song.song_id">
+                <song-item v-model="songs" :song="song"/>
             </tr>
         </table>
     </div>
@@ -24,9 +21,11 @@
 
 <script>
     import api from "../lib/api";
+    import SongItem from "./Song";
 
     export default {
         name: "allSongs",
+        components: {SongItem},
         data() {
             return {
                 loading: false,
@@ -40,12 +39,12 @@
                 ]
             };
         },
-        methods:{
+        methods: {
             artistNameClicked(artist_id) {
-                this.$router.push({ path: `/artist/${artist_id}` })
+                this.$router.push({path: `/artist/${artist_id}`})
             },
             albumNameClicked(album_id) {
-                this.$router.push({ path: `/album/${album_id}` })
+                this.$router.push({path: `/album/${album_id}`})
             },
             async init() {
                 this.songs = [];
@@ -77,8 +76,8 @@
     }
 
     .loading {
-        margin-left:auto;
-        margin-right:auto;
+        margin-left: auto;
+        margin-right: auto;
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
         border-radius: 50%;
@@ -88,8 +87,12 @@
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     .loadingSymbolPadding {
@@ -97,12 +100,12 @@
     }
 
     .list {
-        margin-left:auto;
-        margin-right:auto;
-        margin-top:auto;
-        border:           5px solid #4f4f4f;
-        border-radius:    8px;
-        padding:          40px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        border: 5px solid #4f4f4f;
+        border-radius: 8px;
+        padding: 40px;
         width: 90%;
         background-image: linear-gradient(#404040, #202020);
         display: flex;
@@ -129,19 +132,10 @@
         flex-grow: 1;
     }
 
-    .tableItem {
-        font-size: 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        cursor: pointer;
-    }
-
     .tableItem > * {
         padding: 10px;
         flex-basis: 0;
         flex-grow: 1;
     }
+
 </style>
