@@ -1,17 +1,17 @@
 <template>
     <div>
-        <h2>Results for Songs with title {{this.searchQuery}}</h2>
-        <table>
-            <tr>
+        <h1>Results for songs with title containing: {{this.searchQuery}}</h1>
+        <table class="list">
+            <tr class="header">
                 <th>Title</th>
                 <th>Artist</th>
                 <th>Album</th>
                 <th>Duration</th>
             </tr>
-            <tr v-for="song of songs" v-bind:key="song">
+            <tr class="tableItem" v-for="song of songs" v-bind:key="song">
                 <td>{{song.title}}</td>
-                <td>{{song.artist_name}}</td>
-                <td>{{song.album_name}}</td>
+                <td v-on:click="artistNameClicked(song.artist_id)">{{song.artist_name}}</td>
+                <td v-on:click="albumNameClicked(song.album_id)">{{song.album_name}}</td>
                 <td>{{song.duration}}</td>
             </tr>
         </table>
@@ -37,6 +37,7 @@
             return {
                 songs: [
                     {title: ''},
+                    {album_id: 0},
                     {artist_name: ''},
                     {album_name: ''},
                     {duration: 0},
@@ -53,11 +54,18 @@
                 this.songs.duration = 0;
                 for (var i = 0; i < this.rawResult.length; i++) {
                     this.songs[i] = [];
+                    this.songs[i].album_id = this.rawResult[i]["album_id"];
                     this.songs[i].title = this.rawResult[i]["title"];
-                    this.songs[i].artist_name = this.rawResult[i]["artistName"];
+                    this.songs[i].artist_name = this.rawResult[i]["artist_name"];
                     this.songs[i].album_name = this.rawResult[i]["album_name"];
                     this.songs[i].duration = this.rawResult[i]["duration"];
                 }
+            },
+            artistNameClicked(artist_id) {
+                this.$router.push({ path: `/artist/${artist_id}` })
+            },
+            albumNameClicked(album_id) {
+                this.$router.push({ path: `/album/${album_id}` })
             }
         },
         computed: {
@@ -80,17 +88,60 @@
 
 <style scoped>
 
-    .song {
+    h1 {
+        text-align: center;
+        font-size: 2em;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .list {
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:auto;
+        border:           5px solid #4f4f4f;
+        border-radius:    8px;
+        padding: 40px;
+        width: 90%;
+        background-image: linear-gradient(#404040, #202020);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .list > * {
+        border-bottom: 1px solid white;
+
+    }
+
+    .header {
+        font-size: 30px;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
         flex-wrap: wrap;
         align-items: flex-start;
-
-
     }
 
-    .song > * {
+    .header > * {
+        padding: 10px;
+        flex-basis: 0;
+        flex-grow: 1;
+    }
+
+    .tableItem {
+        font-size: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        cursor: pointer;
+    }
+
+    .tableItem > * {
         padding: 10px;
         flex-basis: 0;
         flex-grow: 1;

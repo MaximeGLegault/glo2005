@@ -164,68 +164,27 @@ export default {
             });
     },
 
-    async getSearchBySong(searchTerm) {
+    async getAllAlbums() {
         return axios({
             method: 'get',
-            url: `${baseUrl}search/${searchTerm}`,
-            headers: {
-                Authorization: Cookies.get('token')
-            },
-            params: {
-                q: searchTerm,
-            }
-        }).then(value => value.data);
+            url: `${baseUrl}albums`
+        }).then(value => value.data)
+            .catch(value => console.log("error in axios getAllAlbums: " + value));
     },
 
-    async getSearchByArtist(searchTerm) {
+    async getAllArtists() {
         return axios({
             method: 'get',
-            url: `${baseUrl}search/${searchTerm}`,
-            headers: {
-                Authorization: Cookies.get('token')
-            },
-            params: {
-                q: searchTerm,
-            }
-        }).then(value => value.data);
+            url: `${baseUrl}artists`
+        }).then(value => value.data)
+            .catch(value => console.log("error in axios getAllArtists: " + value));
     },
 
-    async getSearchByPlaylist(searchTerm) {
+    async getAllSongs() {
         return axios({
             method: 'get',
-            url: `${baseUrl}search/playlists`,
-            headers: {
-                Authorization: Cookies.get('token')
-            },
-            params: {
-                q: searchTerm,
-            }
-        }).then(value => value.data);
-    },
-
-    async getSearchByAlbum(searchTerm) {
-        return axios({
-            method: 'get',
-            url: `${baseUrl}search/albums`,
-            headers: {
-                Authorization: Cookies.get('token')
-            },
-            params: {
-                q: searchTerm,
-            }
-        }).then(value => value.data);
-    },
-
-    async getSearchByUser(searchTerm) {
-        return axios({
-            method: 'get',
-            url: `${baseUrl}search/users`,
-            headers: {
-                Authorization: Cookies.get('token')
-            },
-            params: {
-                q: searchTerm
-            }
-        }).then(value => value.data);
+            url: `${baseUrl}songs`
+        }).then(value => value.data)
+            .catch(value => console.log("error in axios getAllSongs: " + value));
     },
 }

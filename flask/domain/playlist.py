@@ -22,4 +22,3 @@ class Playlist:
         if len(self.user_username) > 0:
             dict_to_return["user_username"] = self.user_username
 
-        return dict_to_return

@@ -12,6 +12,9 @@ class AlbumService:
     def get_album(self, album_id: int) -> Album:
         return self.album_repository.retrive(album_id)
 
+    def get_all_albums(self):
+        return self.album_repository.retrive_all()
+
     def search_album(self, title):
         try:
             albums = self.album_repository.search_by_album_title(title)

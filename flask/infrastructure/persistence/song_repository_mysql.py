@@ -83,3 +83,42 @@ class SongRepositoryMysql:
 
         cursor.close()
         return songs
+
+    def get_all_songs(self):
+
+        cursor = self.database_connector.cursor()
+
+        query = "SELECT * FROM Songs"
+
+        cursor.execute(query)
+
+        results = cursor.fetchall()
+
+        if cursor.rowcount == 0:
+            cursor.close()
+            raise SongNotFound()
+
+        songs = []
+        for row in results:
+            song = Song()
+            song.song_id = row[0]
+            song.album_id = row[1]
+            song.artist_id = row[2]
+            song.title = row[3]
+            song.duration = row[4]
+            songs.append(song)
+
+        for song in songs:
+            query = "SELECT title FROM Albums WHERE album_id = %s"
+            cursor.execute(query, (song.album_id,))
+            album_name = cursor.fetchone()
+            song.album_name = album_name[0]
+
+            query = "SELECT artist_name FROM Artists WHERE artist_id = %s"
+            cursor.execute(query, (song.artist_id,))
+            artist_name = cursor.fetchone()
+            song.artist_name = artist_name[0]
+
+        cursor.close()
+        return songs
+

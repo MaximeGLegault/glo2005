@@ -10,9 +10,6 @@
                         {{playlist.title}}
                     </a>
                 </router-link>
-                <a class="btnPlaylistlist" title="Edit name" @click="changeTitle(playlist.playlist_id)">
-                    <i class="material-icons">edit</i>
-                </a>
                 <a class="btnPlaylistlist" title="Delete playlist" @click="deletePlaylist(playlist.playlist_id)">
                     <i class="material-icons">delete</i>
                 </a>
@@ -28,9 +25,6 @@
             playlists: Array
         },
         methods: {
-            changeTitle(playlist_id) {
-                this.$emit("changeTitle", playlist_id);
-            },
             deletePlaylist(playlist_id) {
                 this.$emit("deletePlaylist", playlist_id)
             }

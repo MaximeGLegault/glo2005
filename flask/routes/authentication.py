@@ -144,7 +144,6 @@ def init_authentication_error_handler(app):
         return response
 
 
-
 class InvalidCredentials(Exception):
     status_code = 400
 

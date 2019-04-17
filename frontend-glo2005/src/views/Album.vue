@@ -31,7 +31,6 @@
 </script>
 
 <style scoped>
-
 </style>
 
 <!--Hard coded album-->

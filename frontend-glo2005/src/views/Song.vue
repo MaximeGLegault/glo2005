@@ -3,10 +3,10 @@
         <div class="title">
             {{song.title}}
         </div>
-        <div class="artist">
+        <div class="artist clickable" @click="albumArtistNameClicked(song.artist_id)">
             {{song.artist_name}}
         </div>
-        <div class="album">
+        <div class="album clickable" @click="albumTitleClicked(song.album_id)">
             {{song.album_name}}
         </div>
         <div class="genre">
@@ -15,6 +15,7 @@
         <div class="duration">
             {{duration}}
         </div>
+
         <div class="year" v-if="year">
             {{year}}
         </div>
@@ -29,6 +30,7 @@
             <img src="../assets/play-button.png" v-if="playing == false" v-on:click="playing=!playing; play();">
             <img src="../assets/play-buttonfull.png" v-if="playing == true" v-on:click="playing=!playing; stop();">
         </div>
+
     </li>
 </template>
 
@@ -59,6 +61,7 @@
             playlistsadded: [],
         }),
         methods:{
+
             addtoplaylist() {
                 var playliststoadd = this.find_playlists_to_add();
                 for(var k=0; k<playliststoadd.length;k++){
@@ -126,6 +129,13 @@
 
 
 
+            albumTitleClicked(album_id) {
+                this.$router.push({path: `/album/${album_id}`})
+            },
+            albumArtistNameClicked(artist_id) {
+                this.$router.push({path: `/artist/${artist_id}`})
+            },
+
         },
         computed: {
             duration() {
@@ -165,15 +175,13 @@
         justify-content: space-evenly;
         flex-wrap: wrap;
         align-items: flex-start;
-
-
     }
-
     .song > * {
         padding: 10px;
         flex-basis: 0;
         flex-grow: 1;
     }
+
 
     .like {
 
@@ -203,6 +211,15 @@
     .play > img {
         height: 20px;
         width: 20px;
+
+    .clickable {
+        color: white;
+        cursor: pointer;
+    }
+
+    .clickable:hover {
+        color: #651fff;
+
     }
 
 </style>
