@@ -2,21 +2,23 @@ from typing import Dict
 
 
 class Playlist:
-
     def __init__(self):
+        self.playlist_id = 0
+        self.user_id = 0
+        self.user_username = ""
         self.title = ""
         self.songs = []
-        self.user_id = 0
-        self.playlist_id = 0
 
     def to_dict(self) -> Dict:
         dict_to_return = {
-            "title": self.title,
+            "playlist_id": self.playlist_id,
             "user_id": self.user_id,
-            "playlist_id": self.playlist_id
+            "title": self.title
         }
 
-        if self.songs:
+        if len(self.songs) > 0:
             dict_to_return["songs"] = [song.to_dict() for song in self.songs]
 
-        return dict_to_return
+        if len(self.user_username) > 0:
+            dict_to_return["user_username"] = self.user_username
+

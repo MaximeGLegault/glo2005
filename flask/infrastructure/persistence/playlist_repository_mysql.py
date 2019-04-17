@@ -114,6 +114,73 @@ class PlaylistRepositoryMysql:
 
         return playlist_id
 
+    def add_song_to_playlist(self, playlist_id, song_id):
+        cursor = self.database_connector.cursor()
+
+        query = "INSERT INTO Playlist_Songs (playlist_id, song_id) VALUES (%s, %s)"
+        cursor.execute(query, (playlist_id, song_id))
+
+        self.database_connector.commit()
+        cursor.close()
+        return playlist_id
+
+    def delete_song(self, playlist_id, song_id):
+        cursor = self.database_connector.cursor()
+
+        query = "DELETE FROM Playlist_Songs WHERE song_id = %s AND playlist_id = %s"
+        cursor.execute(query, (song_id,playlist_id))
+
+        self.database_connector.commit()
+        cursor.close()
+
+    def add_to_history(self,user_id,song_id):
+        playlist_id= self.history_exists(user_id);
+        if(playlist_id>=0):
+            self.add_song_to_playlist(playlist_id,song_id)
+        else:
+            id = self.add_playlist_to_user(user_id,"History")
+            self.add_song_to_playlist(id,song_id)
+        return song_id
+
+    def like_song(self,user_id,song_id):
+        playlist_id= self.liked_playlist_exists(user_id);
+        if(playlist_id>=0):
+            self.add_song_to_playlist(playlist_id,song_id)
+        else:
+            id = self.add_playlist_to_user(user_id,"Liked")
+            self.add_song_to_playlist(id,song_id)
+        return song_id
+
+    def liked_playlist_exists(self,user_id):
+        playlist_id = -1
+        playlists = self.get_playlist_from_username(user_id)
+
+        for play in playlists:
+            if(play.title == "Liked"):
+                playlist_id=play.playlist_id
+                break
+
+        return playlist_id
+
+    def history_exists(self,user_id):
+        playlist_id = -1
+        playlists = self.get_playlist_from_username(user_id)
+
+        for play in playlists:
+            if(play.title == "History"):
+                playlist_id=play.playlist_id
+                break
+
+        return playlist_id
+
+    def unlike_song(self,user_id,song_id):
+        playlist_id= self.liked_playlist_exists(user_id);
+        if(playlist_id>=0):
+            self.delete_song(playlist_id,song_id)
+        else:
+            song_id = -1
+        return song_id
+
     def add(self, title) -> int:
         cursor = self.database_connector.cursor()
 

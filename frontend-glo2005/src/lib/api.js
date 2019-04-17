@@ -88,6 +88,56 @@ export default {
         }).then(value => value.data)
     },
 
+    async add_to_history(song_id) {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'POST',
+            url: `${baseUrl}playlists/history`,
+            data: {song_id: song_id},
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data)
+    },
+
+    async like(song_id) {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'POST',
+            url: `${baseUrl}playlists/liked`,
+            data: {song_id: song_id},
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data)
+    },
+
+    async unlike(song_id) {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'DELETE',
+            url: `${baseUrl}playlists/liked`,
+            data: {song_id: song_id},
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data)
+    },
+
+    async addSongToPlaylist(song_id, playlist_id) {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'POST',
+            url: `${baseUrl}playlists/${playlist_id}`,
+            data: {title: playlist_id,
+            song_id: song_id},
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data)
+    },
+
+    async getUserPlaylists() {
+        let token = Cookies.get('token');
+        return axios({
+            method: 'GET',
+            url: `${baseUrl}playlists`,
+            headers: {'Authorization': "Bearer " + token}
+        }).then(value => value.data)
+    },
+
     async getSearch(search_type, search_term) {
         return axios({
             method: 'get',

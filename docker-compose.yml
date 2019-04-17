@@ -8,12 +8,12 @@ services:
         depends_on:
             - bd
         ports:
-            - "5000:5000"
+            - "5000"
     frontend:
         build: ./frontend-glo2005
         container_name: frontend
         ports:
-            - "8080:8080"
+            - "8080"
         depends_on:
           - app
         environment:
@@ -26,4 +26,4 @@ services:
             MYSQL_DATABASE: glo2005
             MYSQL_ROOT_PASSWORD: 1234
         ports:
-            - "3306:3306"
+            - "3306"
