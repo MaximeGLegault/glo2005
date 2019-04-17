@@ -1,6 +1,6 @@
 from flask import current_app
 
-from domain.Playlist import Playlist
+from domain.playlist import Playlist
 from infrastructure.persistence.playlist_repository_mysql import PlaylistRepositoryMysql, PlaylistNotFound
 
 
@@ -16,6 +16,15 @@ class PlaylistService:
 
         return playlist
 
+    def get_user_playlists(self,user_id):
+        return self.playlist_repository.get_playlist_from_username(user_id)
+
+    def like_song(self,user_id, song_id):
+        return self.playlist_repository.like_song(user_id,song_id)
+
+    def unlike_song(self,user_id, song_id):
+        return self.playlist_repository.unlike_song(user_id,song_id)
+
     def delete(self, user_id: str,  playlist_id: int) -> None:
         if self.playlist_repository.is_playlist_by_user(user_id, playlist_id):
             self.playlist_repository.delete(playlist_id)
@@ -27,6 +36,8 @@ class PlaylistService:
     def add(self, user_id: int, title: str) -> int:
         return self.playlist_repository.add_playlist_to_user(user_id, title)
 
+    def add_song(self, playlist_name, song_id):
+        return self.playlist_repository.add_song_to_playlist(playlist_name, song_id)
 
 class ImpossibleToGetPlaylist(Exception):
     status_code = 404
