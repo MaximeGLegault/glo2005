@@ -81,6 +81,7 @@ class PlaylistRepositoryMysql:
             title, = cursor.fetchone()
             song.album_name = title
 
+        cursor.nextset()
         cursor.close()
         return playlist
 
@@ -116,6 +117,15 @@ class PlaylistRepositoryMysql:
 
     def add_song_to_playlist(self, playlist_id, song_id):
         cursor = self.database_connector.cursor()
+
+        query = "SELECT * FROM Playlist_Songs WHERE playlist_id = %s AND song_id = %s"
+        cursor.execute(query, (playlist_id, song_id))
+
+        results = cursor.fetchone()
+
+        if results is not None:
+            cursor.close()
+            return playlist_id
 
         query = "INSERT INTO Playlist_Songs (playlist_id, song_id) VALUES (%s, %s)"
         cursor.execute(query, (playlist_id, song_id))

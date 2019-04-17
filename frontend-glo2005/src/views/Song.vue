@@ -30,8 +30,8 @@
         </div>
         <div class="options">
             <vue-multiselect class="dropdown" v-model="playlists" :options="options" :multiple="true"
-                             @input="addtoplaylist" @tag="newplaylist" :searchable="true" :show-labels="false"
-                             :close-on-select="false" :clear-on-select="false" taggable=true tag-position="top"
+                             @input="addToPlaylist" @tag="newplaylist" :searchable="true" :show-labels="false"
+                             :close-on-select="false" :clear-on-select="false" tag-position="top"
                              placeholder="Add to playlist"></vue-multiselect>
         </div>
         <div class="play">
@@ -73,16 +73,13 @@
             playlistsadded: [],
         }),
         methods: {
-
-            addtoplaylist() {
-                var playliststoadd = this.find_playlists_to_add();
-                for (var k = 0; k < playliststoadd.length; k++) {
-                    var id = this.find_id_from_title(playliststoadd[k]);
+            addToPlaylist() {
+                let playlistsToAdd = this.find_playlists_to_add();
+                for (let k = 0; k < playlistsToAdd.length; k++) {
+                    let id = this.find_id_from_title(playlistsToAdd[k]);
                     api.addSongToPlaylist(this.song.song_id, id);
-                    this.playlistsadded.push(playliststoadd[k]);
+                    this.playlistsadded.push(playlistsToAdd[k]);
                 }
-
-
             },
             async newplaylist(newPlaylist) {
                 this.playlists.push(newPlaylist);

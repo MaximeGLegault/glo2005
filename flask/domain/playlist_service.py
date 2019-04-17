@@ -42,6 +42,7 @@ class PlaylistService:
     def add_song(self, playlist_name, song_id):
         return self.playlist_repository.add_song_to_playlist(playlist_name, song_id)
 
+
 class ImpossibleToGetPlaylist(Exception):
     status_code = 404
 
