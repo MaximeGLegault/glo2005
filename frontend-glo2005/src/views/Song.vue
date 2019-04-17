@@ -31,7 +31,7 @@
         <div class="options">
             <vue-multiselect class="dropdown" v-model="playlists" :options="options" :multiple="true"
                              @input="addtoplaylist" @tag="newplaylist" :searchable="true" :show-labels="false"
-                             :close-on-select="false" :clear-on-select="false" taggable="true" tag-position="top"
+                             :close-on-select="false" :clear-on-select="false" taggable=true tag-position="top"
                              placeholder="Add to playlist"></vue-multiselect>
         </div>
         <div class="play">

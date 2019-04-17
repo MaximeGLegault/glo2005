@@ -62,7 +62,9 @@
                     console.log(value);
                     this.$router.push('/Login');
                 });
-            await api.getProfile().then(value => this.playlists = value)
+            await api.getProfile().then(value => {
+                this.playlists = value
+            })
         },
         computed: {
             username() {
