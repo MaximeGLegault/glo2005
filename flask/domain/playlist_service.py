@@ -19,6 +19,9 @@ class PlaylistService:
     def get_user_playlists(self,user_id):
         return self.playlist_repository.get_playlist_from_username(user_id)
 
+    def add_to_history(self,user_id, song_id):
+        return self.playlist_repository.add_to_history(user_id,song_id)
+
     def like_song(self,user_id, song_id):
         return self.playlist_repository.like_song(user_id,song_id)
 

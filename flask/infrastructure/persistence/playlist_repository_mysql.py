@@ -133,6 +133,15 @@ class PlaylistRepositoryMysql:
         self.database_connector.commit()
         cursor.close()
 
+    def add_to_history(self,user_id,song_id):
+        playlist_id= self.history_exists(user_id);
+        if(playlist_id>=0):
+            self.add_song_to_playlist(playlist_id,song_id)
+        else:
+            id = self.add_playlist_to_user(user_id,"History")
+            self.add_song_to_playlist(id,song_id)
+        return song_id
+
     def like_song(self,user_id,song_id):
         playlist_id= self.liked_playlist_exists(user_id);
         if(playlist_id>=0):
@@ -148,6 +157,17 @@ class PlaylistRepositoryMysql:
 
         for play in playlists:
             if(play.title == "Liked"):
+                playlist_id=play.playlist_id
+                break
+
+        return playlist_id
+
+    def history_exists(self,user_id):
+        playlist_id = -1
+        playlists = self.get_playlist_from_username(user_id)
+
+        for play in playlists:
+            if(play.title == "History"):
                 playlist_id=play.playlist_id
                 break
 

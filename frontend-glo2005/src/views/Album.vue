@@ -1,5 +1,5 @@
 <template>
-    <playlist v-if="this.album" v-bind:songs="album.songs" v-bind:title="album.title"/>
+    <playlist v-if="this.album" v-bind:songs="album.songs" v-bind:title="album.title" v-bind:year="album.year"/>
 </template>
 
 <script>
@@ -14,7 +14,28 @@
         },
         data: () => ({
 
-            album: {album_id: 1,
+            album: null
+        }),
+
+
+
+        async created() {
+            let album_id = this.$route.params.album_id ? this.$route.params.album_id : 10000000;
+            await api.getAlbum(album_id).then(value => {
+                this.album = value;
+            });
+        }
+    }
+
+
+</script>
+
+<style scoped>
+
+</style>
+
+<!--Hard coded album-->
+<!--{album_id: 1,
                 title: 'If Purpose Each',
                 songs: [{
                     song_id: 1,
@@ -71,22 +92,4 @@
                         year: 2016
                     },
                 ]
-            }
-        }),
-
-
-
-        async created() {
-            let album_id = this.$route.params.album_id ? this.$route.params.album_id : 10000002;
-            await api.getAlbum(album_id).then(value => {
-                this.album = value;
-            });
-        }
-    }
-
-
-</script>
-
-<style scoped>
-
-</style>
+            }-->

@@ -20,19 +20,23 @@
             <div class="duration">
                 Duration
             </div>
-            <div class="year">
+            <div v-if="year" class="year">
                 Year
             </div>
             <div class="like"></div>
             <div class="options"></div>
+            <div class="play"></div>
+
 
         </li>
-        <SongItem v-for="song of songs" v-bind:key="song.song_id" v-model="songs" :song="song"/>
+        <SongItem v-for="song of songs" v-bind:key="song.song_id" v-model="songs" :song="song" v-bind:year="year" v-bind:options="playlists" v-bind:playlist_objects="playlist_objects"/>
     </ul>
 </template>
 
 <script>
     import SongItem from './Song';
+    import api from "../lib/api";
+
     export default {
         name: "Playlist",
         components: {
@@ -40,13 +44,59 @@
         },
         props: {
             title: String,
-            songs: Array
+            songs: Array,
+            year: Number
         },
         methods:{
 
         },
-        created(){
-        }
+        data: () => ({
+            playlists: [],
+            playlist_objects: [],
+        }),
+        async created(){
+            await api.getUserPlaylists().then( value => {
+                this.playlist_objects = value;
+                for (var a = 0; a < value.length; a++) {
+                    this.playlists.push(value[a].title);
+                }
+            });
+            //     .then(async() => {
+            //     debugger;
+            //     for(var i=0; i<this.playlists.length;i++){
+            //         debugger;
+            //         if(this.playlist_objects[i].title == "Liked"){
+            //             var playlist_id = this.playlist_objects[i].playlist_id;
+            //             break;
+            //         }
+            //
+            //     }
+            //
+            //     await api.getSongsOfPlaylist(playlist_id).then(value => {
+            //         debugger;
+            //         var allliked = value.songs;
+            //
+            //         for (var s=0; s<this.songs.length;s++){
+            //             var isliked=false;
+            //
+            //             for(var lik=0; lik<allliked.length; lik++){
+            //
+            //                 if(this.songs[s].song_id == allliked[lik].song_id){
+            //                     isliked=true;
+            //                     break;
+            //                 }
+            //             }
+            //
+            //             this.likedsongs.push({song_id: this.songs[s].song_id,
+            //                 liked: isliked});
+            //
+            //         }
+            //
+            //     })
+            //
+            // })
+
+        },
     };
 
 
@@ -104,6 +154,11 @@
     .options {
         padding: 10px;
         flex-basis: 175px;
+        flex-grow: 0.1;
+    }
+    .play {
+        padding: 10px;
+        flex-basis: 30px;
         flex-grow: 0.1;
     }
 </style>

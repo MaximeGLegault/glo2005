@@ -53,6 +53,16 @@ def add_song_to_playlist(playlist_id, **kwargs):
 
     return make_response(jsonify({'playlist_id': playlist_id}), 201)
 
+@playlists.route('/playlists/history', methods=["POST"])
+@login_required
+def add_to_history(**kwargs):
+    user_id = kwargs["user_id"]
+    content = request.get_json()
+    song_id = content["song_id"]
+    song_id = PlaylistService().add_to_history(user_id,song_id)
+
+    return make_response(jsonify({'song_id': song_id}), 201)
+
 @playlists.route('/playlists/liked', methods=["POST"])
 @login_required
 def like_song(**kwargs):
