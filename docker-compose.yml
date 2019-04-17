@@ -1,4 +1,4 @@
-version: "3"
+version: "3"000000000
 services:
     app:
         build: ./flask
@@ -8,12 +8,12 @@ services:
         depends_on:
             - bd
         ports:
-            - "5000"
+            - "5000:5000"
     frontend:
         build: ./frontend-glo2005
         container_name: frontend
         ports:
-            - "8080"
+            - "8080:8080"
         depends_on:
           - app
         environment:
@@ -25,5 +25,7 @@ services:
         environment:
             MYSQL_DATABASE: glo2005
             MYSQL_ROOT_PASSWORD: 1234
+        volumes:
+            - ./mysql/bd_init/:/docker-entrypoint-initdb.d:ro
         ports:
-            - "3306"
+            - "3306:3306"
