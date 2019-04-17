@@ -1,7 +1,7 @@
 version: "3"
 services:
     app:
-        build: ./flask
+        build: ./app
         restart: always
         links:
             - bd
